@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>From NIT Mizoram to Microsoft | Ankur Singh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & VARIABLES
+   ═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06060f;
+  --bg-card:rgba(255,255,255,0.04);
+  --bg-card-hover:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.07);
+  --cyan:#00e5ff;
+  --gold:#ffb800;
+  --orange:#ff6b35;
+  --green:#00e676;
+  --rose:#ff4081;
+  --purple:#b388ff;
+  --text:#e8eaf0;
+  --text-sec:#94a3b8;
+  --text-muted:#475569;
+  --font-d:'Syne',sans-serif;
+  --font-b:'Outfit',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html{font-size:18px;scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-b);
+  font-weight:400;
+  line-height:1.6;
+  overflow:hidden;
+  cursor:default;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:rgba(0,229,255,0.25)}
+
+/* ═══════════════════════════════════════════
+   AMBIENT ATMOSPHERE
+   ═══════════════════════════════════════════ */
+.orb{
+  position:fixed;border-radius:50%;
+  pointer-events:none;z-index:0;
+  filter:blur(120px);opacity:0;
+  transition:opacity 1.5s ease, background 1.5s ease;
+}
+.orb.visible{opacity:1}
+.orb-1{width:700px;height:700px;top:-15%;left:-10%;animation:drift1 28s ease-in-out infinite alternate}
+.orb-2{width:550px;height:550px;bottom:-15%;right:-8%;animation:drift2 32s ease-in-out infinite alternate}
+.orb-3{width:400px;height:400px;top:40%;left:55%;animation:drift3 24s ease-in-out infinite alternate}
+
+@keyframes drift1{0%{transform:translate(0,0)}100%{transform:translate(120px,80px)}}
+@keyframes drift2{0%{transform:translate(0,0)}100%{transform:translate(-100px,-60px)}}
+@keyframes drift3{0%{transform:translate(0,0)}100%{transform:translate(-80px,50px)}}
+
+.grid-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  opacity:0.6;
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS & UI
+   ═══════════════════════════════════════════ */
+.progress{
+  position:fixed;top:0;left:0;right:0;height:3px;
+  background:rgba(255,255,255,0.06);z-index:200;
+}
+.progress-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--gold));
+  transition:width 0.5s var(--ease);
+  box-shadow:0 0 20px rgba(0,229,255,0.4);
+}
+.slide-num{
+  position:fixed;bottom:2.2rem;right:2.5rem;
+  font-family:var(--font-m);font-size:0.8rem;
+  color:var(--text-muted);z-index:200;
+  letter-spacing:0.05em;
+}
+.slide-num .current{color:var(--text-sec)}
+.key-hint{
+  position:fixed;bottom:2.2rem;left:2.5rem;
+  font-family:var(--font-m);font-size:0.75rem;
+  color:var(--text-muted);z-index:200;
+  transition:opacity 0.5s ease;
+}
+.key-hint kbd{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:4px;padding:2px 8px;
+  font-family:var(--font-m);font-size:0.7rem;
+  margin:0 2px;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDES ENGINE
+   ═══════════════════════════════════════════ */
+.slide{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(0.96);
+  transition:opacity 0.7s ease, transform 0.7s var(--ease);
+  pointer-events:none;z-index:10;
+  padding:4rem 6rem;
+}
+.slide.active{opacity:1;transform:scale(1);pointer-events:all;z-index:11}
+.slide-content{max-width:1200px;width:100%;position:relative;z-index:5}
+.slide-content.center{text-align:center;display:flex;flex-direction:column;align-items:center}
+
+/* Background slide number */
+.bg-num{
+  position:absolute;right:5%;top:5%;
+  font-family:var(--font-d);font-size:14rem;font-weight:800;
+  line-height:1;opacity:0.025;pointer-events:none;
+  color:white;z-index:0;
+}
+
+/* ═══════════════════════════════════════════
+   REVEAL ANIMATIONS
+   ═══════════════════════════════════════════ */
+.reveal{
+  opacity:0;transform:translateY(36px);
+  transition:opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.reveal-left{
+  opacity:0;transform:translateX(-40px);
+  transition:opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.reveal-scale{
+  opacity:0;transform:scale(0.85);
+  transition:opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.slide.active .reveal,
+.slide.active .reveal-left,
+.slide.active .reveal-scale{opacity:1;transform:translate(0) scale(1)}
+
+.d1{transition-delay:0.1s!important}.d2{transition-delay:0.2s!important}
+.d3{transition-delay:0.3s!important}.d4{transition-delay:0.4s!important}
+.d5{transition-delay:0.5s!important}.d6{transition-delay:0.6s!important}
+.d7{transition-delay:0.7s!important}.d8{transition-delay:0.8s!important}
+.d9{transition-delay:0.9s!important}.d10{transition-delay:1.0s!important}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════ */
+.overline{
+  font-family:var(--font-m);font-size:0.8rem;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.2em;
+  color:var(--cyan);margin-bottom:1rem;display:block;
+}
+h1{font-family:var(--font-d);font-weight:800;line-height:1.05;margin-bottom:1.2rem}
+h2{font-family:var(--font-d);font-weight:700;font-size:2.8rem;line-height:1.1;margin-bottom:1rem}
+h3{font-family:var(--font-d);font-weight:700;font-size:1.3rem;line-height:1.2;margin-bottom:0.5rem}
+p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
+.slide-content.center p{margin-left:auto;margin-right:auto}
+.title-huge{font-size:4.5rem;letter-spacing:-0.02em}
+.title-large{font-size:3.5rem;letter-spacing:-0.02em}
+
+.gradient-text{
+  background:linear-gradient(135deg,var(--cyan),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.gradient-text-warm{
+  background:linear-gradient(135deg,var(--orange),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.accent-line{
+  width:56px;height:3px;border-radius:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--gold));
+  margin-bottom:1.5rem;
+}
+.center .accent-line{margin-left:auto;margin-right:auto}
+
+/* ═══════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════ */
+.card-grid{display:grid;gap:1.5rem;margin-top:2rem}
+.card-grid.cols-2{grid-template-columns:1fr 1fr}
+.card-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+.card-grid.cols-4{grid-template-columns:1fr 1fr 1fr 1fr}
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:16px;padding:1.8rem;
+  transition:all 0.35s ease;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:3px;background:var(--cyan);opacity:0;
+  transition:opacity 0.3s ease;
+}
+.card:hover{
+  background:var(--bg-card-hover);
+  border-color:rgba(255,255,255,0.12);
+  transform:translateY(-3px);
+  box-shadow:0 16px 40px rgba(0,0,0,0.3);
+}
+.card:hover::before{opacity:1}
+.card-icon{font-size:2rem;margin-bottom:0.8rem;display:block}
+.card p{font-size:0.95rem;color:var(--text-muted);margin-top:0.3rem}
+.card.accent-gold::before{background:var(--gold)}
+.card.accent-green::before{background:var(--green)}
+.card.accent-orange::before{background:var(--orange)}
+.card.accent-rose::before{background:var(--rose)}
+.card.accent-purple::before{background:var(--purple)}
+.card.accent-cyan::before{background:var(--cyan)}
+
+/* ═══════════════════════════════════════════
+   TIMELINE
+   ═══════════════════════════════════════════ */
+.timeline{position:relative;margin-top:3rem;padding-left:3rem}
+.timeline-line{
+  position:absolute;left:0.75rem;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--gold),var(--green));
+  opacity:0;transform:scaleY(0);transform-origin:top;
+  transition:opacity 0.5s ease 0.3s, transform 1.2s var(--ease) 0.3s;
+}
+.slide.active .timeline-line{opacity:1;transform:scaleY(1)}
+.timeline-node{position:relative;padding-bottom:2.2rem}
+.timeline-dot{
+  position:absolute;left:-2.55rem;top:0.4rem;
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid var(--cyan);background:var(--bg);
+  box-shadow:0 0 12px rgba(0,229,255,0.3);
+  z-index:2;
+}
+.timeline-node:nth-child(3) .timeline-dot{border-color:var(--gold);box-shadow:0 0 12px rgba(255,184,0,0.3)}
+.timeline-node:nth-child(4) .timeline-dot{border-color:var(--green);box-shadow:0 0 12px rgba(0,230,118,0.3)}
+.timeline-years{
+  font-family:var(--font-m);font-size:0.75rem;
+  color:var(--text-muted);letter-spacing:0.1em;margin-bottom:0.3rem;
+}
+.timeline-node h3{font-size:1.4rem;margin-bottom:0.3rem}
+.timeline-lesson{
+  font-style:italic;color:var(--text-sec);
+  font-size:0.95rem;font-weight:300;
+  border-left:2px solid rgba(255,255,255,0.08);
+  padding-left:1rem;margin-top:0.5rem;
+}
+
+/* ═══════════════════════════════════════════
+   CONFIDENCE CURVE (SVG)
+   ═══════════════════════════════════════════ */
+.curve-container{margin-top:2rem;width:100%;max-width:900px}
+.curve-container svg{width:100%;height:auto}
+.curve-path{
+  fill:none;stroke:url(#curveGrad);stroke-width:3;
+  stroke-linecap:round;
+  stroke-dasharray:1200;stroke-dashoffset:1200;
+  transition:stroke-dashoffset 2.5s var(--ease) 0.5s;
+}
+.slide.active .curve-path{stroke-dashoffset:0}
+.curve-label{
+  font-family:'Outfit',sans-serif;font-size:12px;
+  fill:var(--text-sec);opacity:0;
+  transition:opacity 0.5s ease;
+}
+.slide.active .curve-label{opacity:1}
+.slide.active .curve-label.cl1{transition-delay:0.8s}
+.slide.active .curve-label.cl2{transition-delay:1.4s}
+.slide.active .curve-label.cl3{transition-delay:1.8s}
+.slide.active .curve-label.cl4{transition-delay:2.2s}
+.curve-area{
+  fill:url(#areaGrad);opacity:0;
+  transition:opacity 1.5s ease 1s;
+}
+.slide.active .curve-area{opacity:1}
+
+/* ═══════════════════════════════════════════
+   STATS COUNTERS
+   ═══════════════════════════════════════════ */
+.stats-row{display:flex;gap:3rem;margin-top:2.5rem;flex-wrap:wrap;justify-content:center}
+.stat{text-align:center}
+.stat-number{
+  font-family:var(--font-d);font-size:4rem;font-weight:800;
+  line-height:1;margin-bottom:0.3rem;
+}
+.stat-label{
+  font-family:var(--font-m);font-size:0.75rem;
+  text-transform:uppercase;letter-spacing:0.15em;
+  color:var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   COMPARISON TABLE
+   ═══════════════════════════════════════════ */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+.compare-col{padding:2rem;border-radius:16px}
+.compare-col.dim{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.05);
+}
+.compare-col.bright{
+  background:rgba(0,229,255,0.05);
+  border:1px solid rgba(0,229,255,0.15);
+}
+.compare-col h3{margin-bottom:1.2rem;font-size:1.1rem}
+.compare-col.dim h3{color:var(--text-muted)}
+.compare-col.bright h3{color:var(--cyan)}
+.compare-item{
+  padding:0.6rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:0.95rem;color:var(--text-sec);font-weight:300;
+}
+.compare-col.dim .compare-item{color:var(--text-muted);text-decoration:line-through;text-decoration-color:rgba(255,255,255,0.15)}
+
+/* ═══════════════════════════════════════════
+   ROADMAP STEPS
+   ═══════════════════════════════════════════ */
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem}
+.roadmap-step{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:16px;padding:1.5rem;position:relative;
+}
+.roadmap-step .step-year{
+  font-family:var(--font-d);font-size:1.6rem;font-weight:800;
+  margin-bottom:0.3rem;
+}
+.roadmap-step .step-title{
+  font-family:var(--font-m);font-size:0.7rem;
+  text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--text-muted);margin-bottom:0.8rem;
+}
+.roadmap-step ul{list-style:none;padding:0}
+.roadmap-step li{
+  font-size:0.85rem;color:var(--text-sec);font-weight:300;
+  padding:0.25rem 0;padding-left:1rem;position:relative;
+}
+.roadmap-step li::before{
+  content:'';position:absolute;left:0;top:0.6rem;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);
+}
+.roadmap-step:nth-child(2) li::before{background:var(--gold)}
+.roadmap-step:nth-child(3) li::before{background:var(--orange)}
+.roadmap-step:nth-child(4) li::before{background:var(--green)}
+.roadmap-step:nth-child(1) .step-year{color:var(--cyan)}
+.roadmap-step:nth-child(2) .step-year{color:var(--gold)}
+.roadmap-step:nth-child(3) .step-year{color:var(--orange)}
+.roadmap-step:nth-child(4) .step-year{color:var(--green)}
+
+/* ═══════════════════════════════════════════
+   HABIT CIRCLES
+   ═══════════════════════════════════════════ */
+.habit-row{display:flex;gap:3rem;margin-top:3rem;justify-content:center}
+.habit{text-align:center;flex:0 0 240px}
+.habit-circle{
+  width:140px;height:140px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.2rem;position:relative;
+}
+.habit-circle::before{
+  content:'';position:absolute;inset:-3px;border-radius:50%;
+  padding:3px;
+  background:conic-gradient(var(--cyan),var(--gold),var(--cyan));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:spin 8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.habit-num{
+  font-family:var(--font-d);font-size:3.5rem;font-weight:800;
+  color:var(--text);
+}
+.habit h3{font-size:1.1rem;margin-bottom:0.4rem}
+.habit p{font-size:0.9rem;color:var(--text-muted);margin:0 auto}
+
+/* ═══════════════════════════════════════════
+   RESOURCE GRID
+   ═══════════════════════════════════════════ */
+.resource-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+.resource{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;padding:1.2rem;
+  transition:all 0.3s ease;
+}
+.resource:hover{background:var(--bg-card-hover);transform:translateY(-2px)}
+.resource-name{font-weight:600;font-size:0.95rem;margin-bottom:0.2rem}
+.resource-desc{font-size:0.8rem;color:var(--text-muted);font-weight:300}
+.resource-tag{
+  display:inline-block;margin-top:0.5rem;
+  font-family:var(--font-m);font-size:0.65rem;
+  padding:2px 8px;border-radius:4px;
+  background:rgba(0,230,118,0.1);color:var(--green);
+  text-transform:uppercase;letter-spacing:0.05em;
+}
+
+/* ═══════════════════════════════════════════
+   ROLE GRID
+   ═══════════════════════════════════════════ */
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.role{
+  display:flex;align-items:start;gap:1rem;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;padding:1.3rem;
+}
+.role-icon{
+  flex-shrink:0;width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.role h3{font-size:1rem;margin-bottom:0.15rem}
+.role p{font-size:0.8rem;color:var(--text-muted);max-width:none}
+
+/* ═══════════════════════════════════════════
+   QUOTE BLOCK
+   ═══════════════════════════════════════════ */
+.quote{
+  font-size:1.8rem;font-weight:300;line-height:1.5;
+  color:var(--text);max-width:800px;
+  position:relative;padding-left:2rem;
+}
+.quote::before{
+  content:'"';position:absolute;left:-0.5rem;top:-1rem;
+  font-family:var(--font-d);font-size:6rem;font-weight:800;
+  color:var(--cyan);opacity:0.2;line-height:1;
+}
+
+/* ═══════════════════════════════════════════
+   CHECKLIST
+   ═══════════════════════════════════════════ */
+.checklist{list-style:none;padding:0;margin-top:1.5rem}
+.checklist li{
+  display:flex;align-items:start;gap:0.8rem;
+  padding:0.7rem 0;font-size:1.05rem;font-weight:300;
+  color:var(--text-sec);
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.check{
+  flex-shrink:0;width:24px;height:24px;border-radius:50%;
+  background:rgba(0,229,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--cyan);font-size:0.8rem;margin-top:2px;
+}
+
+/* ═══════════════════════════════════════════
+   TWO COLUMN LAYOUT
+   ═══════════════════════════════════════════ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.split-wide{display:grid;grid-template-columns:1.2fr 0.8fr;gap:3rem;align-items:start}
+
+/* ═══════════════════════════════════════════
+   BIG YEAR / BIG NUMBER
+   ═══════════════════════════════════════════ */
+.big-year{
+  font-family:var(--font-d);font-size:10rem;font-weight:800;
+  line-height:1;letter-spacing:-0.03em;
+  background:linear-gradient(135deg,var(--cyan) 0%,var(--gold) 50%,var(--orange) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:1.5rem;
+}
+
+/* ═══════════════════════════════════════════
+   TECH CARDS
+   ═══════════════════════════════════════════ */
+.tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+.tech-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:14px;padding:1.5rem;text-align:center;
+  transition:all 0.3s ease;position:relative;overflow:hidden;
+}
+.tech-card:hover{background:var(--bg-card-hover);transform:translateY(-3px)}
+.tech-card .tech-icon{font-size:2.2rem;margin-bottom:0.7rem;display:block}
+.tech-card h3{font-size:1rem;margin-bottom:0.3rem}
+.tech-card p{font-size:0.8rem;color:var(--text-muted);max-width:none}
+.tech-card .tech-bar{
+  position:absolute;bottom:0;left:0;right:0;height:3px;
+}
+
+/* ═══════════════════════════════════════════
+   TITLE SLIDE SPECIAL
+   ═══════════════════════════════════════════ */
+.title-author{
+  display:flex;align-items:center;gap:1rem;
+  margin-top:2rem;
+}
+.author-line{width:48px;height:2px;background:var(--cyan);border-radius:2px}
+.author-name{font-weight:500;font-size:1.1rem}
+.author-tag{
+  font-family:var(--font-m);font-size:0.75rem;
+  color:var(--gold);letter-spacing:0.05em;
+}
+.hint-text{
+  margin-top:3rem;font-family:var(--font-m);
+  font-size:0.75rem;color:var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   CULTURE ITEMS
+   ═══════════════════════════════════════════ */
+.culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2rem}
+.culture-item{
+  display:flex;gap:1rem;align-items:start;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;padding:1.2rem;
+}
+.culture-icon{font-size:1.5rem;flex-shrink:0}
+.culture-item h3{font-size:1rem;margin-bottom:0.15rem}
+.culture-item p{font-size:0.85rem;color:var(--text-muted);max-width:none}
+
+/* ═══════════════════════════════════════════
+   CLOSING SLIDE
+   ═══════════════════════════════════════════ */
+.closing-quote{
+  font-size:1.55rem;font-weight:300;line-height:1.7;
+  max-width:750px;color:var(--text);
+}
+.closing-quote strong{font-weight:600;color:var(--cyan)}
+.connect-row{
+  display:flex;gap:2rem;margin-top:2.5rem;
+  justify-content:center;flex-wrap:wrap;
+}
+.connect-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;padding:1.2rem 2rem;
+  font-family:var(--font-m);font-size:0.9rem;
+  display:flex;align-items:center;gap:0.8rem;
+  transition:all 0.3s ease;
+}
+.connect-card:hover{
+  background:var(--bg-card-hover);
+  border-color:rgba(255,255,255,0.15);
+}
+
+/* ═══════════════════════════════════════════
+   NOTES PANEL
+   ═══════════════════════════════════════════ */
+.notes-panel{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(6,6,15,0.95);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(0,229,255,0.2);
+  padding:1.2rem 2.5rem;
+  z-index:300;
+  transform:translateY(100%);
+  transition:transform 0.4s var(--ease);
+  max-height:30vh;overflow-y:auto;
+}
+.notes-panel.visible{transform:translateY(0)}
+.notes-label{
+  font-family:var(--font-m);font-size:0.65rem;
+  text-transform:uppercase;letter-spacing:0.15em;
+  color:var(--cyan);margin-bottom:0.5rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.notes-label::before{
+  content:'';width:8px;height:8px;border-radius:50%;
+  background:var(--cyan);display:inline-block;
+  box-shadow:0 0 8px rgba(0,229,255,0.5);
+}
+.notes-text{
+  font-size:0.95rem;color:var(--text-sec);
+  font-weight:300;line-height:1.6;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media(max-width:1400px){
+  html{font-size:16px}
+  .slide{padding:3rem 4rem}
+  .title-huge{font-size:3.8rem}
+  .big-year{font-size:8rem}
+}
+@media(max-width:1100px){
+  html{font-size:14px}
+  .slide{padding:2.5rem 3rem}
+  .roadmap{grid-template-columns:1fr 1fr}
+  .tech-grid{grid-template-columns:1fr 1fr}
+  .resource-grid{grid-template-columns:1fr 1fr}
+  .role-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ AMBIENT ═══ -->
+<div class="orb orb-1 visible" id="orb1"></div>
+<div class="orb orb-2 visible" id="orb2"></div>
+<div class="orb orb-3 visible" id="orb3"></div>
+<div class="grid-overlay"></div>
+
+<!-- ═══ UI ═══ -->
+<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+<div class="slide-num"><span class="current" id="slideNum">01</span> / <span id="slideTotal">17</span></div>
+<div class="key-hint" id="keyHint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate &nbsp; <kbd>N</kbd> notes &nbsp; <kbd>P</kbd> presenter</div>
+
+<!-- Notes panel -->
+<div class="notes-panel" id="notesPanel">
+  <div class="notes-label">Speaker Notes</div>
+  <div class="notes-text" id="notesText"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 1 — TITLE
+     ═══════════════════════════════════════════════ -->
+<section class="slide active" id="s1" data-notes="Welcome everyone. Introduce yourself briefly — name, batch, current role. Set the tone: this is a conversation, not a lecture. Ask: how many of you are in 1st year? 2nd? 3rd? 4th? Get a feel for the room.">
+  <div class="bg-num">01</div>
+  <div class="slide-content center">
+    <span class="overline reveal d1">Alumni Session &mdash; NIT Mizoram</span>
+    <h1 class="title-huge reveal d2">From <span class="gradient-text">Campus</span><br>to <span class="gradient-text">Cloud</span></h1>
+    <p class="reveal d3" style="font-size:1.3rem;color:var(--text-sec);margin-top:0.5rem">A Journey in Tech</p>
+    <div class="title-author reveal d4">
+      <div class="author-line"></div>
+      <span class="author-name">Ankur Singh</span>
+      <span class="author-tag">&bull; Gold Medalist, CSE 2016</span>
+    </div>
+    <div class="hint-text reveal d5">Press <kbd>&rarr;</kbd> or <kbd>Space</kbd> to begin</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 2 — THE BEGINNING
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s2" data-notes="Pause here. Let the number sink in. 'I came here in 2012 with zero industry connections and zero idea of what was ahead.' Share a specific memory — your hostel room, a professor, the canteen. Make it vivid. The goal is emotional connection.">
+  <div class="bg-num">02</div>
+  <div class="slide-content center">
+    <div class="big-year reveal d1">2012</div>
+    <h2 class="reveal d2" style="font-size:2.4rem">I sat exactly where you're sitting.</h2>
+    <p class="reveal d3" style="margin-top:1rem;font-size:1.2rem">Same campus. Same hostel.<br>Probably the same mess food.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 3 — WHAT NIT MIZORAM GAVE ME
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s3" data-notes="Key message: NIT Mizoram is not a compromise, it's an advantage. Smaller batch = you stand out. Share specific examples — did you lead a club? Win a competition? Had direct access to a professor? The 'newer NIT' chip: acknowledge it honestly, then reframe it as fuel. 'I used that doubt as motivation.'">
+  <div class="bg-num">03</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">The Foundation</span>
+    <h2 class="reveal d2">What This Place Gave Me</h2>
+    <div class="card-grid cols-3">
+      <div class="card reveal d3 accent-cyan">
+        <span class="card-icon">&#9878;</span>
+        <h3>Smaller Batch = More Access</h3>
+        <p>More lab time, more professor attention, more leadership roles. You're not lost in a crowd.</p>
+      </div>
+      <div class="card reveal d4 accent-orange">
+        <span class="card-icon">&#9733;</span>
+        <h3>The "Newer NIT" Fuel</h3>
+        <p>That chip on your shoulder? It becomes your greatest motivator. Use it.</p>
+      </div>
+      <div class="card reveal d5 accent-gold">
+        <span class="card-icon">&#9881;</span>
+        <h3>Self-Learning DNA</h3>
+        <p>The internet is the great equalizer. You already know how to learn on your own.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 4 — CAREER TIMELINE
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s4" data-notes="Walk through each chapter with a story, not just facts. INTELLECT: 'My first week I couldn't understand the codebase. I stayed late every night for a month.' ORACLE: 'I prepared for interviews while working full-time — weekends and evenings for 3 months.' MICROSOFT: 'The scale blew my mind. My first PR affected millions.' Be honest about the lows — failed interviews, imposter syndrome, tough days.">
+  <div class="bg-num">04</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">The Journey</span>
+    <h2 class="reveal d2">Three Chapters, One Path</h2>
+    <div class="timeline">
+      <div class="timeline-line"></div>
+      <div class="timeline-node reveal d3">
+        <div class="timeline-dot"></div>
+        <div class="timeline-years">2016 &mdash; 2019</div>
+        <h3>Intellect Design Arena</h3>
+        <p style="font-size:0.95rem;color:var(--text-sec)">Campus placement. Enterprise software. Steep learning curve.</p>
+        <div class="timeline-lesson">"Your first job teaches you how to be an engineer. College taught you how to code."</div>
+      </div>
+      <div class="timeline-node reveal d5">
+        <div class="timeline-dot"></div>
+        <div class="timeline-years">2019 &mdash; 2020</div>
+        <h3>Oracle</h3>
+        <p style="font-size:0.95rem;color:var(--text-sec)">Products used by millions. Scale. Code review rigor.</p>
+        <div class="timeline-lesson">"Moving companies is not disloyalty &mdash; it's growth."</div>
+      </div>
+      <div class="timeline-node reveal d7">
+        <div class="timeline-dot"></div>
+        <div class="timeline-years">2020 &mdash; Present</div>
+        <h3>Microsoft</h3>
+        <p style="font-size:0.95rem;color:var(--text-sec)">Office Product Group. TypeScript, React. 400M+ users.</p>
+        <div class="timeline-lesson">"Your work on Monday is used by millions on Tuesday."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 5 — CONFIDENCE CURVE
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s5" data-notes="This slide is emotional — take your time. 'In college I felt invincible. My first job humbled me fast. There were days I questioned if I was good enough. That's the dip. EVERYONE goes through it.' Share a specific imposter syndrome moment. Then: 'The recovery comes when you stop comparing and start learning.' Key: normalize the dip so students don't panic when it happens to them.">
+  <div class="bg-num">05</div>
+  <div class="slide-content center">
+    <span class="overline reveal d1">The Honest Truth</span>
+    <h2 class="reveal d2">The Confidence Curve</h2>
+    <div class="curve-container reveal-scale d3">
+      <svg viewBox="0 0 900 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="curveGrad" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#00e5ff"/>
+            <stop offset="50%" stop-color="#ffb800"/>
+            <stop offset="100%" stop-color="#00e676"/>
+          </linearGradient>
+          <linearGradient id="areaGrad" x1="450" y1="60" x2="450" y2="280" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- Grid lines -->
+        <line x1="60" y1="280" x2="860" y2="280" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="60" y1="200" x2="860" y2="200" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="60" y1="120" x2="860" y2="120" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- Axis labels -->
+        <text x="30" y="285" fill="rgba(255,255,255,0.2)" font-family="Outfit" font-size="10">LOW</text>
+        <text x="28" y="65" fill="rgba(255,255,255,0.2)" font-family="Outfit" font-size="10">HIGH</text>
+        <!-- Area fill -->
+        <path class="curve-area" d="M80 260 C140 260,180 80,220 65 S340 280,400 260 C440 240,480 180,540 145 C600 110,700 85,840 80 L840 280 L80 280 Z"/>
+        <!-- Main curve -->
+        <path class="curve-path" d="M80 260 C140 260,180 80,220 65 S340 280,400 260 C440 240,480 180,540 145 C600 110,700 85,840 80"/>
+        <!-- Labels -->
+        <text class="curve-label cl1" x="190" y="48" fill="#00e5ff" font-family="JetBrains Mono" font-size="11" font-weight="500">College Peak</text>
+        <text class="curve-label cl2" x="340" y="300" fill="#ff6b35" font-family="JetBrains Mono" font-size="11" font-weight="500">Imposter Syndrome</text>
+        <text class="curve-label cl3" x="500" y="130" fill="#ffb800" font-family="JetBrains Mono" font-size="11" font-weight="500">Recovery</text>
+        <text class="curve-label cl4" x="740" y="65" fill="#00e676" font-family="JetBrains Mono" font-size="11" font-weight="500">Finding Your Groove</text>
+        <!-- Dots at key points -->
+        <circle cx="220" cy="65" r="5" fill="#00e5ff" opacity="0.8"/>
+        <circle cx="380" cy="268" r="5" fill="#ff6b35" opacity="0.8"/>
+        <circle cx="540" cy="145" r="5" fill="#ffb800" opacity="0.8"/>
+        <circle cx="840" cy="80" r="5" fill="#00e676" opacity="0.8"/>
+      </svg>
+    </div>
+    <p class="reveal d4" style="margin-top:1.5rem;font-style:italic">Everyone goes through this. It's not a bug &mdash; it's the process.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 6 — FOUR PILLARS
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s6" data-notes="These are the 4 things I wish someone told me in college. FUNDAMENTALS: 'Don't just LeetCode — actually understand WHY binary search works, HOW OS scheduling works. This depth is what separates you in interviews.' BUILDING: 'Tutorial hell is real. Build something YOU need — a hostel complaint tracker, a mess menu app.' COMMUNICATION: 'The best engineers I work with can explain complex things simply.' CONSISTENCY: Write this on the board: 1hr x 300 > 10hr x 30.">
+  <div class="bg-num">06</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">What It Takes</span>
+    <h2 class="reveal d2">The Four Pillars</h2>
+    <div class="card-grid cols-2">
+      <div class="card reveal d3 accent-cyan">
+        <span class="card-icon" style="font-size:1.5rem;color:var(--cyan)">01</span>
+        <h3>Fundamentals</h3>
+        <p>DSA, OS, DBMS, Networks. LeetCode medium level. Don't skip class &mdash; these matter more than you think.</p>
+      </div>
+      <div class="card reveal d4 accent-gold">
+        <span class="card-icon" style="font-size:1.5rem;color:var(--gold)">02</span>
+        <h3>Building</h3>
+        <p>Projects, open source, hackathons. A CRUD app you actually use beats 10 tutorial projects.</p>
+      </div>
+      <div class="card reveal d5 accent-orange">
+        <span class="card-icon" style="font-size:1.5rem;color:var(--orange)">03</span>
+        <h3>Communication</h3>
+        <p>Explain your thinking clearly. Mock interviews, tech blogs, presenting in class. This compounds.</p>
+      </div>
+      <div class="card reveal d6 accent-green">
+        <span class="card-icon" style="font-size:1.5rem;color:var(--green)">04</span>
+        <h3>Consistency</h3>
+        <p>1 hr/day for 300 days beats 10 hrs/day for 30 days. Show up. Every. Day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 7 — WHAT INTERVIEWERS LOOK FOR
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s7" data-notes="Tell a real interview story here — maybe one where you failed and one where you succeeded. 'In my Oracle interview, I got stuck on a graph problem. Instead of freezing, I said: here's what I'm thinking, here's where I'm stuck. The interviewer gave me a hint and I ran with it. That's what coachable means.' Ask students: 'How many of you practice explaining your thought process out loud?'">
+  <div class="bg-num">07</div>
+  <div class="slide-content">
+    <div class="split-wide">
+      <div>
+        <span class="overline reveal d1">The Interview</span>
+        <h2 class="reveal d2">What They<br>Actually Look For</h2>
+        <p class="reveal d3" style="margin-top:1rem">It's not a talent show. It's a learnable skill.<br>I failed interviews before I cleared them.</p>
+      </div>
+      <div>
+        <ul class="checklist">
+          <li class="reveal d3"><span class="check">&#10003;</span> Think out loud while solving</li>
+          <li class="reveal d4"><span class="check">&#10003;</span> Handle "what if" follow-ups calmly</li>
+          <li class="reveal d5"><span class="check">&#10003;</span> Ask clarifying questions first</li>
+          <li class="reveal d6"><span class="check">&#10003;</span> Take hints gracefully &mdash; be coachable</li>
+          <li class="reveal d7"><span class="check">&#10003;</span> Be someone people want to work with</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 8 — MICROSOFT BY NUMBERS
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s8" data-notes="Let the counter animation play. 'India is Microsoft's largest engineering center outside headquarters. 20,000+ engineers in Hyderabad, Bangalore, and Noida. This is not a satellite office — we build core products here.' Pause on 400M users: 'Every feature I ship in Office reaches more people than the entire population of the US. That's the scale you get to work at.'">
+  <div class="bg-num">08</div>
+  <div class="slide-content center">
+    <span class="overline reveal d1">Microsoft</span>
+    <h2 class="reveal d2">By the Numbers</h2>
+    <div class="stats-row reveal d3">
+      <div class="stat">
+        <div class="stat-number gradient-text"><span class="counter" data-target="220">0</span>K+</div>
+        <div class="stat-label">Employees Globally</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number gradient-text-warm"><span class="counter" data-target="20">0</span>K+</div>
+        <div class="stat-label">Engineers in India</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="color:var(--green)"><span class="counter" data-target="400">0</span>M+</div>
+        <div class="stat-label">M365 Users</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="color:var(--purple)"><span class="counter" data-target="12">0</span>+</div>
+        <div class="stat-label">Major Product Lines</div>
+      </div>
+    </div>
+    <p class="reveal d4" style="margin-top:2.5rem;font-size:1rem;color:var(--text-muted)">Office &bull; Azure &bull; Windows &bull; Teams &bull; LinkedIn &bull; GitHub &bull; Xbox &bull; Copilot &bull; Bing &bull; Surface &bull; Dynamics &bull; Power Platform</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 9 — ROLES AT MICROSOFT
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s9" data-notes="Not everyone wants to be or should be a SWE. 'One of the best engineers I work with started as a PM. Another came from design.' Highlight: PM is huge in Microsoft culture — you don't need to code all day. Data Science and ML roles are booming. MSR (Microsoft Research) publishes papers that change the industry. Ask: 'What role interests you most?' Get a show of hands.">
+  <div class="bg-num">09</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">Opportunities</span>
+    <h2 class="reveal d2">Not Just "Software Engineer"</h2>
+    <div class="role-grid">
+      <div class="role reveal d3">
+        <div class="role-icon" style="background:rgba(0,229,255,0.1)">&#128187;</div>
+        <div><h3>SWE</h3><p>Build features, write code, ship products to millions</p></div>
+      </div>
+      <div class="role reveal d3">
+        <div class="role-icon" style="background:rgba(255,184,0,0.1)">&#128202;</div>
+        <div><h3>Program Manager</h3><p>Define what to build, shape strategy, work with customers</p></div>
+      </div>
+      <div class="role reveal d4">
+        <div class="role-icon" style="background:rgba(0,230,118,0.1)">&#129302;</div>
+        <div><h3>Data Scientist</h3><p>ML models, experimentation, data-driven insights</p></div>
+      </div>
+      <div class="role reveal d4">
+        <div class="role-icon" style="background:rgba(255,107,53,0.1)">&#9881;</div>
+        <div><h3>SRE</h3><p>Keep services running at global scale, 99.99% uptime</p></div>
+      </div>
+      <div class="role reveal d5">
+        <div class="role-icon" style="background:rgba(179,136,255,0.1)">&#128300;</div>
+        <div><h3>Research (MSR)</h3><p>Publish papers, prototype future tech, push boundaries</p></div>
+      </div>
+      <div class="role reveal d5">
+        <div class="role-icon" style="background:rgba(255,64,129,0.1)">&#127912;</div>
+        <div><h3>Design</h3><p>UX research, interaction design, make products delightful</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 10 — CULTURE & HOW TO GET IN
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s10" data-notes="LEFT SIDE — Culture: 'Growth mindset isn't just a poster. In my first week, my manager said: your job is to learn, not to prove yourself.' Share a hackathon story from One Week. Internal mobility: 'I've seen people go from Azure to Xbox to AI.' RIGHT SIDE — Getting In: Emphasize referrals heavily. 'Connect with every Microsoft engineer you can find on LinkedIn. A referral gets your resume past the filter.' For Explore program: 'If you're in 1st or 2nd year, this is your best shot.'">
+  <div class="bg-num">10</div>
+  <div class="slide-content">
+    <div class="split">
+      <div>
+        <span class="overline reveal d1">The Culture</span>
+        <h2 class="reveal d2" style="font-size:2.2rem">Growth Mindset<br>Is Real</h2>
+        <div style="margin-top:1.5rem">
+          <div class="culture-item reveal d3" style="border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:0.8rem;background:var(--bg-card)">
+            <span class="culture-icon">&#128161;</span>
+            <div><h3>"I don't know" is encouraged</h3><p style="max-width:none">Asking for help is a strength, not weakness</p></div>
+          </div>
+          <div class="culture-item reveal d4" style="border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:0.8rem;background:var(--bg-card)">
+            <span class="culture-icon">&#128260;</span>
+            <div><h3>Internal mobility</h3><p style="max-width:none">Switch teams or products every 2-3 years</p></div>
+          </div>
+          <div class="culture-item reveal d5" style="border:1px solid var(--border);border-radius:12px;padding:1rem;background:var(--bg-card)">
+            <span class="culture-icon">&#9889;</span>
+            <div><h3>Hackathon culture</h3><p style="max-width:none">One Week: any idea can become a real product</p></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span class="overline reveal d1">Getting In</span>
+        <h2 class="reveal d2" style="font-size:2.2rem">Four Doors</h2>
+        <div style="margin-top:1.5rem">
+          <div class="card reveal d3 accent-cyan" style="margin-bottom:0.8rem">
+            <h3>Campus Hiring</h3>
+            <p>Microsoft visits select campuses + hires off-campus</p>
+          </div>
+          <div class="card reveal d4 accent-gold" style="margin-bottom:0.8rem">
+            <h3>Referrals</h3>
+            <p>Build your LinkedIn now. Every employee can refer.</p>
+          </div>
+          <div class="card reveal d5 accent-orange" style="margin-bottom:0.8rem">
+            <h3>Online Applications</h3>
+            <p>careers.microsoft.com &mdash; no pedigree filter</p>
+          </div>
+          <div class="card reveal d6 accent-green">
+            <h3>Internships</h3>
+            <p>Explore (1st/2nd yr), regular intern (3rd yr)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 11 — THE REALISTIC PATH
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s11" data-notes="This is the most important section. Be brutally honest: 'Microsoft does not come to NIT Mizoram for campus placements. I didn't wait for them to come to me — I went to them.' Explain the off-campus route step by step. 'I applied online, got an OA link, cleared 3 rounds, and got the offer. No referral for my first application.' Emphasize: the online route is EXACTLY the same interview as campus hires get. There is no 'lesser' path.">
+  <div class="bg-num">11</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">The Honest Truth</span>
+    <h2 class="reveal d2">The Realistic Path<br>From <span class="gradient-text">Here</span> to <span class="gradient-text">There</span></h2>
+    <div class="split" style="margin-top:2rem">
+      <div>
+        <div class="card reveal d3 accent-cyan" style="margin-bottom:1rem">
+          <h3>The Reality</h3>
+          <p>Top tech companies visit ~20-30 campuses in India. Most NITs outside the top 10 aren't on that list. <strong style="color:var(--text)">That's OK.</strong></p>
+        </div>
+        <div class="card reveal d4 accent-gold" style="margin-bottom:1rem">
+          <h3>The Equalizer: Off-Campus Hiring</h3>
+          <p>Microsoft, Google, Amazon hire <strong style="color:var(--gold)">thousands</strong> off-campus every year. Same interview. Same role. Same salary. No "lesser" path.</p>
+        </div>
+        <div class="card reveal d5 accent-green">
+          <h3>The Funnel</h3>
+          <p>Online Application &rarr; Resume Screen &rarr; OA (Online Assessment) &rarr; 3-4 Interview Rounds &rarr; Offer</p>
+        </div>
+      </div>
+      <div>
+        <h3 class="reveal d3" style="color:var(--cyan);margin-bottom:1rem">When to Apply</h3>
+        <ul class="checklist">
+          <li class="reveal d4"><span class="check" style="background:rgba(255,184,0,0.1);color:var(--gold)">J</span><strong style="color:var(--text)">Jul-Sep</strong> &mdash; Microsoft, Google open applications for next year</li>
+          <li class="reveal d5"><span class="check" style="background:rgba(255,107,53,0.1);color:var(--orange)">A</span><strong style="color:var(--text)">Aug-Oct</strong> &mdash; Amazon, Flipkart, Uber hiring peaks</li>
+          <li class="reveal d6"><span class="check" style="background:rgba(0,229,255,0.1);color:var(--cyan)">Y</span><strong style="color:var(--text)">Year-round</strong> &mdash; Startups, mid-size companies always hiring</li>
+          <li class="reveal d7"><span class="check" style="background:rgba(0,230,118,0.1);color:var(--green)">!</span><strong style="color:var(--text)">Don't wait</strong> &mdash; Apply 6 months before you want to join</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 12 — BUILD YOUR SIGNAL
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s12" data-notes="'Your resume gets 30 seconds. Your GitHub gets 10. Your LinkedIn might be the reason you get found in the first place.' GITHUB: 'Pin your best 6 repos. Write real READMEs with screenshots. Green contribution graph matters — it shows consistency.' LINKEDIN: 'Connect with EVERY Microsoft/Google engineer you can find. When you apply, that connection shows up. Post about what you're learning — even a LeetCode solution breakdown gets engagement.' COMPETITIVE CODING: 'A Codeforces rating of 1400+ or LeetCode contest rating of 1800+ is a strong signal on any resume.'">
+  <div class="bg-num">12</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">Stand Out</span>
+    <h2 class="reveal d2">Build Your Signal</h2>
+    <p class="reveal d3">When no one knows your college, they need to know <strong style="color:var(--cyan)">your work</strong>.</p>
+    <div class="card-grid cols-2" style="margin-top:1.5rem">
+      <div class="card reveal d4 accent-cyan">
+        <span class="card-icon">&#128025;</span>
+        <h3>GitHub Profile = Your Portfolio</h3>
+        <p style="color:var(--text-sec)">Pin 6 best repos with proper READMEs, screenshots, live demos. Green contribution graph shows consistency. Recruiters check this before your resume.</p>
+        <div style="margin-top:0.8rem;font-family:var(--font-m);font-size:0.8rem;color:var(--cyan)">
+          Goal: 200+ contributions/year, 3+ quality projects
+        </div>
+      </div>
+      <div class="card reveal d5 accent-gold">
+        <span class="card-icon">&#128101;</span>
+        <h3>LinkedIn = Your Network Engine</h3>
+        <p style="color:var(--text-sec)">Connect with engineers at target companies. Post about what you're learning. Comment on tech posts. When you apply, mutual connections show up to recruiters.</p>
+        <div style="margin-top:0.8rem;font-family:var(--font-m);font-size:0.8rem;color:var(--gold)">
+          Goal: 500+ connections, 1 post/week about your journey
+        </div>
+      </div>
+      <div class="card reveal d6 accent-orange">
+        <span class="card-icon">&#127942;</span>
+        <h3>Competitive Coding Ratings</h3>
+        <p style="color:var(--text-sec)">Codeforces, LeetCode contests, CodeChef. A rating proves you can solve problems under pressure. Many companies filter by this.</p>
+        <div style="margin-top:0.8rem;font-family:var(--font-m);font-size:0.8rem;color:var(--orange)">
+          Goal: CF 1400+ / LC contest 1800+ / 300+ problems solved
+        </div>
+      </div>
+      <div class="card reveal d7 accent-green">
+        <span class="card-icon">&#9997;</span>
+        <h3>Tech Blog / Writing</h3>
+        <p style="color:var(--text-sec)">Write about what you learn: a DSA pattern, a project postmortem, a tool review. Shows depth of understanding. Hashnode, Dev.to, or personal blog.</p>
+        <div style="margin-top:0.8rem;font-family:var(--font-m);font-size:0.8rem;color:var(--green)">
+          Goal: 1 article/month, share on LinkedIn
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 13 — THE INTERVIEW PLAYBOOK
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s13" data-notes="Walk through each round slowly. OA: 'You get 2-3 coding problems, 60-90 minutes. Think LeetCode medium. If you can solve 2 out of 3, you're likely through.' DSA ROUNDS: 'They don't care if you've seen the exact problem. They care about your approach. Always: clarify inputs, think of edge cases, explain your brute force, then optimize.' SYSTEM DESIGN: 'For new grads, they won't ask you to design YouTube. But they might ask: design a URL shortener, design a chat app. Know basics: load balancers, databases, caching.' BEHAVIORAL: 'Prepare 5 stories using STAR. Projects, conflicts, failures, teamwork, leadership.'">
+  <div class="bg-num">13</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">Round by Round</span>
+    <h2 class="reveal d2">The Interview Playbook</h2>
+    <div class="card-grid cols-2" style="margin-top:1.5rem">
+      <div class="card reveal d3" style="border-left:3px solid var(--cyan)">
+        <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem">
+          <span style="font-family:var(--font-d);font-size:1.4rem;color:var(--cyan)">Round 0</span>
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em">Online Assessment</span>
+        </div>
+        <p style="color:var(--text-sec)">2-3 coding problems in 60-90 min. Difficulty: LeetCode Easy-Medium.</p>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem"><strong style="color:var(--text-sec)">Prep:</strong> Solve 200+ LeetCode. Focus on arrays, strings, trees, graphs, DP.</p>
+        <p style="color:var(--text-muted);font-size:0.85rem"><strong style="color:var(--text-sec)">Pass rate:</strong> ~30% of applicants clear this stage.</p>
+      </div>
+      <div class="card reveal d4" style="border-left:3px solid var(--gold)">
+        <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem">
+          <span style="font-family:var(--font-d);font-size:1.4rem;color:var(--gold)">Rounds 1-2</span>
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em">DSA Deep Dive</span>
+        </div>
+        <p style="color:var(--text-sec)">45-60 min each. One problem, go deep. Interviewer watches you think.</p>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem"><strong style="color:var(--text-sec)">Pattern:</strong> Clarify &rarr; Brute force &rarr; Optimize &rarr; Code &rarr; Test</p>
+        <p style="color:var(--text-muted);font-size:0.85rem"><strong style="color:var(--text-sec)">Key topics:</strong> Trees, graphs, sliding window, binary search, DP</p>
+      </div>
+      <div class="card reveal d5" style="border-left:3px solid var(--orange)">
+        <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem">
+          <span style="font-family:var(--font-d);font-size:1.4rem;color:var(--orange)">Round 3</span>
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em">System Design (Lite)</span>
+        </div>
+        <p style="color:var(--text-sec)">For new grads: simpler scope. Design a URL shortener, chat app, or parking lot.</p>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem"><strong style="color:var(--text-sec)">Know:</strong> Client-server, REST APIs, databases (SQL vs NoSQL), caching basics</p>
+        <p style="color:var(--text-muted);font-size:0.85rem"><strong style="color:var(--text-sec)">Resource:</strong> Gaurav Sen YouTube, Alex Xu's System Design book</p>
+      </div>
+      <div class="card reveal d6" style="border-left:3px solid var(--green)">
+        <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem">
+          <span style="font-family:var(--font-d);font-size:1.4rem;color:var(--green)">Round 4</span>
+          <span style="font-family:var(--font-m);font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em">Behavioral / Hiring Manager</span>
+        </div>
+        <p style="color:var(--text-sec)">Culture fit + past experiences. Uses the STAR method (Situation, Task, Action, Result).</p>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem"><strong style="color:var(--text-sec)">Prep:</strong> 5 stories ready: a hard bug, team conflict, leadership, failure, proud moment</p>
+        <p style="color:var(--text-muted);font-size:0.85rem"><strong style="color:var(--text-sec)">Microsoft cares about:</strong> Growth mindset, collaboration, customer obsession</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 14 — THE NUMBERS GAME
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s14" data-notes="Be raw here. 'Let me tell you what nobody tells you: you will get rejected. A lot. I applied to 40+ companies. I got callbacks from maybe 12. Offers from 3.' Show the funnel math on screen. 'If your hit rate is 5%, you need to apply to 60 places to get 3 offers. That's just math, not failure.' Share a specific rejection story: 'I got rejected from [company] after the final round. It hurt. But a month later Microsoft said yes.' The message: VOLUME + PERSISTENCE = SUCCESS.">
+  <div class="bg-num">14</div>
+  <div class="slide-content center">
+    <span class="overline reveal d1">Persistence Wins</span>
+    <h2 class="reveal d2">The Numbers Game</h2>
+    <div class="stats-row reveal d3" style="margin-top:2rem">
+      <div class="stat">
+        <div class="stat-number" style="color:var(--text-muted);font-size:3.5rem"><span class="counter2" data-target="60">0</span>+</div>
+        <div class="stat-label">Applications sent</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="font-size:3.5rem"><span style="color:var(--cyan)">~15</span></div>
+        <div class="stat-label">OA invites (~25%)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="font-size:3.5rem"><span style="color:var(--gold)">~6</span></div>
+        <div class="stat-label">Interview calls (~10%)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="font-size:3.5rem"><span style="color:var(--green)">2-3</span></div>
+        <div class="stat-label">Offers (~5%)</div>
+      </div>
+    </div>
+    <div class="card reveal d4" style="margin-top:2.5rem;max-width:700px;text-align:left;border-left:3px solid var(--gold)">
+      <h3 style="color:var(--gold)">This is not failure. This is the process.</h3>
+      <p style="color:var(--text-sec)">Every rejected application is practice. Every failed OA shows you what to study. Every bombed interview teaches you what to say next time. The only way to lose is to stop applying.</p>
+    </div>
+    <p class="reveal d5" style="margin-top:1.5rem;font-family:var(--font-m);font-size:0.9rem;color:var(--text-muted)">Apply early &bull; Apply broadly &bull; Apply again</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 15 — MYTHS BUSTED
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s15" data-notes="Go through each myth. Ask audience: 'How many believe this?' before busting each one. MYTH 1 (College): 'I am living proof. My colleague at Microsoft came from a tier-3 college. Another came from BITS Goa. Your college opens doors; your skills walk through them.' MYTH 2 (CGPA): 'Some companies have a 7.0 cutoff. Keep yours above 8 to be safe. After your first job, nobody asks.' MYTH 3 (Everything): 'You don't need to know React AND Django AND ML AND Blockchain. Pick one stack, go deep. Depth beats breadth.' MYTH 4 (Lucky): 'Luck is preparation meeting opportunity. I was prepared when the opportunity came.'">
+  <div class="bg-num">15</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">Let's Clear This Up</span>
+    <h2 class="reveal d2">Myths <span style="color:var(--rose)">Busted</span></h2>
+    <div class="card-grid cols-2" style="margin-top:1.5rem">
+      <div class="card reveal d3" style="border-left:3px solid var(--rose)">
+        <h3 style="color:var(--rose);text-decoration:line-through;text-decoration-thickness:2px">"Only IIT/top NIT students get into FAANG"</h3>
+        <p style="color:var(--text-sec);margin-top:0.6rem">Microsoft hires from 100+ colleges in India. Google's hiring page says "we don't care where you studied." Off-campus hiring doesn't even ask your college name in the OA.</p>
+        <p style="color:var(--green);font-size:0.85rem;margin-top:0.5rem;font-weight:500">TRUTH: Your skills clear interviews, not your college name.</p>
+      </div>
+      <div class="card reveal d4" style="border-left:3px solid var(--rose)">
+        <h3 style="color:var(--rose);text-decoration:line-through;text-decoration-thickness:2px">"CGPA doesn't matter at all"</h3>
+        <p style="color:var(--text-sec);margin-top:0.6rem">Some companies have cutoffs (6.5-7.0). Many recruiters glance at it as a first filter. After your first job, it never comes up again.</p>
+        <p style="color:var(--green);font-size:0.85rem;margin-top:0.5rem;font-weight:500">TRUTH: Keep 8+ to be safe. It's a hygiene factor, not a differentiator.</p>
+      </div>
+      <div class="card reveal d5" style="border-left:3px solid var(--rose)">
+        <h3 style="color:var(--rose);text-decoration:line-through;text-decoration-thickness:2px">"I need to know every technology"</h3>
+        <p style="color:var(--text-sec);margin-top:0.6rem">You don't need React + Django + ML + Blockchain + Cloud. That's breadth without depth. Interviewers spot this instantly.</p>
+        <p style="color:var(--green);font-size:0.85rem;margin-top:0.5rem;font-weight:500">TRUTH: Master 1 language, 1 stack. Go deep. Depth > Breadth always.</p>
+      </div>
+      <div class="card reveal d6" style="border-left:3px solid var(--rose)">
+        <h3 style="color:var(--rose);text-decoration:line-through;text-decoration-thickness:2px">"People who get in are just lucky or connected"</h3>
+        <p style="color:var(--text-sec);margin-top:0.6rem">Luck is real. But luck favors the prepared. The person who solved 500 LeetCode problems and applied to 50 companies will "get lucky" more often.</p>
+        <p style="color:var(--green);font-size:0.85rem;margin-top:0.5rem;font-weight:500">TRUTH: Luck = preparation x opportunity x persistence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 16 — THE MINDSET THAT WINS
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s16" data-notes="This is the VALUES slide. Slow down here. 'Skills get you the interview. Mindset gets you the career.' PROACTIVE: 'Nobody at Microsoft told me to learn React. I saw the team was moving that way and taught myself before anyone asked. That's what got me my first big project.' Share a specific story of proactivity — volunteering for a task, learning ahead of time, reaching out to someone without being asked. CONSISTENT: 'I did LeetCode for 8 months straight while working at Intellect. Not 4 hours on weekends — 45 minutes every morning before work. Rain or shine.' Show the math: 45min x 240 days = 180 hours = the equivalent of a full college course. HARD WORK: 'There were weekends I spent debugging. Late nights before deadlines. This isn't glamorous. But every senior engineer I respect has these stories.' Emphasize: talent is overrated. The people who succeed are the ones who didn't quit when it got boring.">
+  <div class="bg-num">16</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">Beyond Skills</span>
+    <h2 class="reveal d2">The Mindset That <span class="gradient-text">Wins</span></h2>
+    <p class="reveal d3" style="margin-bottom:2rem">Skills get you the interview. <strong style="color:var(--cyan)">Mindset</strong> gets you the career.</p>
+
+    <div class="card-grid cols-3">
+      <!-- PROACTIVE -->
+      <div class="card reveal d4" style="border-top:3px solid var(--cyan);padding-top:2rem">
+        <div style="font-family:var(--font-d);font-size:2.5rem;font-weight:800;color:var(--cyan);line-height:1;margin-bottom:0.8rem">01</div>
+        <h3 style="font-size:1.4rem">Be Proactive</h3>
+        <p style="color:var(--text-sec);margin-top:0.6rem;font-size:0.95rem">Don't wait for assignments, placements, or permission. The best opportunities go to people who <strong style="color:var(--text)">move first</strong>.</p>
+        <ul style="list-style:none;padding:0;margin-top:1rem">
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--cyan)">&#9656;</span> Learn tech before your course covers it</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--cyan)">&#9656;</span> Message engineers on LinkedIn — ask questions</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--cyan)">&#9656;</span> Volunteer for hard tasks nobody wants</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--cyan)">&#9656;</span> Start the coding club if one doesn't exist</li>
+        </ul>
+        <div style="margin-top:1rem;padding:0.8rem;background:rgba(0,229,255,0.06);border-radius:8px;font-size:0.85rem;color:var(--text-sec);font-style:italic">
+          "I learned React before my team adopted it. When they needed someone, I was ready. That's not luck &mdash; that's positioning."
+        </div>
+      </div>
+
+      <!-- CONSISTENT -->
+      <div class="card reveal d5" style="border-top:3px solid var(--gold);padding-top:2rem">
+        <div style="font-family:var(--font-d);font-size:2.5rem;font-weight:800;color:var(--gold);line-height:1;margin-bottom:0.8rem">02</div>
+        <h3 style="font-size:1.4rem">Be Consistent</h3>
+        <p style="color:var(--text-sec);margin-top:0.6rem;font-size:0.95rem">Motivation fades. Discipline stays. The difference between "talented" and "successful" is <strong style="color:var(--text)">showing up on day 187</strong>.</p>
+        <ul style="list-style:none;padding:0;margin-top:1rem">
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--gold)">&#9656;</span> 45 min/day &times; 240 days = 180 hours</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--gold)">&#9656;</span> That's a full college course, self-taught</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--gold)">&#9656;</span> Track your streak — don't break the chain</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--gold)">&#9656;</span> Small daily > heroic weekly</li>
+        </ul>
+        <div style="margin-top:1rem;padding:0.8rem;background:rgba(255,184,0,0.06);border-radius:8px;font-size:0.85rem;color:var(--text-sec);font-style:italic">
+          "I solved LeetCode every morning for 8 months while working full-time. Not exciting. Not viral. But it got me into Microsoft."
+        </div>
+      </div>
+
+      <!-- HARD WORKING -->
+      <div class="card reveal d6" style="border-top:3px solid var(--orange);padding-top:2rem">
+        <div style="font-family:var(--font-d);font-size:2.5rem;font-weight:800;color:var(--orange);line-height:1;margin-bottom:0.8rem">03</div>
+        <h3 style="font-size:1.4rem">Work Hard</h3>
+        <p style="color:var(--text-sec);margin-top:0.6rem;font-size:0.95rem">There's no hack, no shortcut, no secret. The people at the top <strong style="color:var(--text)">outworked everyone</strong> when it mattered.</p>
+        <ul style="list-style:none;padding:0;margin-top:1rem">
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--orange)">&#9656;</span> Late nights debugging are part of the job</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--orange)">&#9656;</span> Weekend projects build your portfolio</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--orange)">&#9656;</span> Preparing while others are Netflix-ing</li>
+          <li style="padding:0.3rem 0;font-size:0.85rem;color:var(--text-muted);display:flex;gap:0.5rem"><span style="color:var(--orange)">&#9656;</span> Talent is overrated. Grit is underrated.</li>
+        </ul>
+        <div style="margin-top:1rem;padding:0.8rem;background:rgba(255,107,53,0.06);border-radius:8px;font-size:0.85rem;color:var(--text-sec);font-style:italic">
+          "Every senior engineer I admire has stories of weekends spent learning, failing, rebuilding. There is no shortcut past the work."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 17 — TECH YOU SHOULD KNOW
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s17" data-notes="This is where you can do a LIVE DEMO if internet is available. Option 1: Open VS Code, show Copilot writing a function. Option 2: Show your own GitHub profile and a real PR. Emphasize: 'All of these are FREE for students. The GitHub Student Pack alone gives you Copilot, domain names, and cloud credits. There is zero excuse not to use these.' If no internet, just talk through each tool.">
+  <div class="bg-num">17</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">Free Tools</span>
+    <h2 class="reveal d2">Tech You Should Know</h2>
+    <div class="tech-grid">
+      <div class="tech-card reveal d3">
+        <span class="tech-icon">&#11088;</span>
+        <h3>VS Code</h3>
+        <p>#1 editor in the world. Free. Extensible.</p>
+        <div class="tech-bar" style="background:var(--cyan)"></div>
+      </div>
+      <div class="tech-card reveal d3">
+        <span class="tech-icon">&#128025;</span>
+        <h3>GitHub</h3>
+        <p>Your portfolio lives here. Employers check it.</p>
+        <div class="tech-bar" style="background:#8b5cf6"></div>
+      </div>
+      <div class="tech-card reveal d4">
+        <span class="tech-icon">&#129302;</span>
+        <h3>GitHub Copilot</h3>
+        <p>AI pair programmer. Free for students.</p>
+        <div class="tech-bar" style="background:var(--green)"></div>
+      </div>
+      <div class="tech-card reveal d4">
+        <span class="tech-icon">&#9729;</span>
+        <h3>Azure for Students</h3>
+        <p>$100 free credits. Deploy real projects.</p>
+        <div class="tech-bar" style="background:var(--cyan)"></div>
+      </div>
+      <div class="tech-card reveal d5">
+        <span class="tech-icon">&#123;&#125;</span>
+        <h3>TypeScript</h3>
+        <p>Powers modern web. Microsoft, Google, everywhere.</p>
+        <div class="tech-bar" style="background:#3178c6"></div>
+      </div>
+      <div class="tech-card reveal d5">
+        <span class="tech-icon">&#128218;</span>
+        <h3>Microsoft Learn</h3>
+        <p>Free certs: Azure, AI, Power Platform.</p>
+        <div class="tech-bar" style="background:var(--gold)"></div>
+      </div>
+      <div class="tech-card reveal d6">
+        <span class="tech-icon">&#9670;</span>
+        <h3>.NET / C#</h3>
+        <p>Enterprise-grade. Massive job market in India.</p>
+        <div class="tech-bar" style="background:var(--purple)"></div>
+      </div>
+      <div class="tech-card reveal d6">
+        <span class="tech-icon">&#9889;</span>
+        <h3>Power Platform</h3>
+        <p>Low-code apps. Great for hackathons.</p>
+        <div class="tech-bar" style="background:var(--rose)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 18 — AI REVOLUTION
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s18" data-notes="'Raise your hand if you've used ChatGPT or Copilot.' (Most will raise hands.) 'Now raise your hand if you've used it to actually LEARN, not just get answers.' This is the key distinction. AI makes you faster but you still need to understand what you're building. Microsoft's bet: Copilot in every product. 'I use Copilot every single day at work. It doesn't replace me — it makes me focus on the hard problems.'">
+  <div class="bg-num">18</div>
+  <div class="slide-content center">
+    <span class="overline reveal d1">The Shift</span>
+    <h1 class="title-large reveal d2">The <span class="gradient-text">AI</span> Revolution</h1>
+    <p class="reveal d3" style="font-size:1.25rem;margin-top:0.5rem">AI is not replacing engineers.<br>It's making engineers <strong style="color:var(--cyan)">10x</strong> more productive.</p>
+    <div class="stats-row reveal d4" style="margin-top:2.5rem">
+      <div class="stat">
+        <div class="stat-number" style="font-size:2.5rem;color:var(--cyan)">Copilot</div>
+        <div class="stat-label">In every Microsoft product</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="font-size:2.5rem;color:var(--gold)">ChatGPT</div>
+        <div class="stat-label">Powered by Azure</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="font-size:2.5rem;color:var(--green)">Claude</div>
+        <div class="stat-label">AI pair programmers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 19 — BEFORE vs AFTER AI
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s19" data-notes="Walk through each row. 'Before: you'd spend an hour remembering Python syntax for file I/O. Now: ask Copilot, it writes it, you focus on the logic.' But emphasize: 'AI can scaffold your project, but it can't design your system. It can suggest a fix, but you decide if the fix is right. The meta-skill is CLEAR THINKING — if you can describe what you want precisely, AI amplifies you 10x.' Read the quote at the bottom slowly.">
+  <div class="bg-num">19</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">How AI Changes Prep</span>
+    <h2 class="reveal d2">Before vs. With AI</h2>
+    <div class="compare reveal d3">
+      <div class="compare-col dim">
+        <h3>Before AI</h3>
+        <div class="compare-item">Memorize syntax</div>
+        <div class="compare-item">Hours debugging alone</div>
+        <div class="compare-item">Build everything from scratch</div>
+        <div class="compare-item">Google + StackOverflow rabbit holes</div>
+      </div>
+      <div class="compare-col bright">
+        <h3>With AI</h3>
+        <div class="compare-item">Understand concepts &mdash; AI handles syntax</div>
+        <div class="compare-item">Describe the bug, get candidate fixes instantly</div>
+        <div class="compare-item">Scaffold with AI, customize with your expertise</div>
+        <div class="compare-item">Conversational debugging with full context</div>
+      </div>
+    </div>
+    <div class="reveal d4" style="margin-top:2rem;text-align:center">
+      <p style="max-width:600px;margin:0 auto;font-style:italic;color:var(--gold)">"The engineers who thrive in the AI era are those who can clearly describe what they want. Prompt engineering is just clear thinking."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 20 — YEAR WISE ROADMAP
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s20" data-notes="This is the most actionable slide. Point to each year column and say: 'If you're in Xth year, THIS is your focus right now.' 1st years: 'Just start. Pick Python or C++. Do arrays and strings on LeetCode. Start a GitHub profile TODAY — even a hello-world repo counts.' 2nd years: 'You should be building real things now, not just following tutorials.' 3rd years: 'Interview prep is a daily habit, not a last-minute sprint.' 4th years: 'Apply broadly and early. Don't wait for only campus placements.'">
+  <div class="bg-num">20</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">Start Today</span>
+    <h2 class="reveal d2">Year-by-Year Roadmap</h2>
+    <div class="roadmap">
+      <div class="roadmap-step reveal d3">
+        <div class="step-year">1st</div>
+        <div class="step-title">Build Foundations</div>
+        <ul>
+          <li>Master Python or C++</li>
+          <li>DSA basics: arrays, trees, graphs</li>
+          <li>Start your GitHub profile</li>
+          <li>Join a coding club</li>
+        </ul>
+      </div>
+      <div class="roadmap-step reveal d4">
+        <div class="step-year">2nd</div>
+        <div class="step-title">Go Deeper</div>
+        <ul>
+          <li>LeetCode: 2-3 problems/week</li>
+          <li>Web dev: HTML/CSS/JS &rarr; React</li>
+          <li>Build 1-2 real projects</li>
+          <li>Hackathons: SIH, MLH</li>
+        </ul>
+      </div>
+      <div class="roadmap-step reveal d5">
+        <div class="step-year">3rd</div>
+        <div class="step-title">Interview-Ready</div>
+        <ul>
+          <li>Daily LeetCode (med/hard)</li>
+          <li>System design basics</li>
+          <li>1 substantial deployed project</li>
+          <li>Get an internship</li>
+        </ul>
+      </div>
+      <div class="roadmap-step reveal d6">
+        <div class="step-year">4th</div>
+        <div class="step-title">Execute</div>
+        <ul>
+          <li>Apply early &amp; broadly</li>
+          <li>Behavioral prep (STAR)</li>
+          <li>Network on LinkedIn</li>
+          <li>Negotiate your offers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 21 — THE 1-1-1 HABIT
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s21" data-notes="'If you remember ONE thing from today, remember this: 1-1-1.' Write it on the whiteboard too. '1 hour DSA, 1 hour building, 1 conversation. Every day. That's it.' The conversation part is underrated: 'Talk to a senior, an alumni, a peer — anyone who's a step ahead. This is how you discover opportunities, get referrals, and stay motivated.' Challenge them: 'Who's willing to commit to 1-1-1 starting tomorrow? Raise your hand.'">
+  <div class="bg-num">21</div>
+  <div class="slide-content center">
+    <span class="overline reveal d1">Daily Framework</span>
+    <h2 class="reveal d2">The 1&ndash;1&ndash;1 Habit</h2>
+    <div class="habit-row">
+      <div class="habit reveal d3">
+        <div class="habit-circle"><span class="habit-num">1</span></div>
+        <h3>Hour of DSA</h3>
+        <p>LeetCode, HackerRank, or Codeforces. Every single day.</p>
+      </div>
+      <div class="habit reveal d4">
+        <div class="habit-circle"><span class="habit-num">1</span></div>
+        <h3>Hour of Building</h3>
+        <p>Work on your project. Learn a new framework. Ship something.</p>
+      </div>
+      <div class="habit reveal d5">
+        <div class="habit-circle"><span class="habit-num">1</span></div>
+        <h3>Conversation</h3>
+        <p>Talk to a senior, alumni, or peer about careers and tech.</p>
+      </div>
+    </div>
+    <p class="reveal d6" style="margin-top:2.5rem;font-size:1rem;color:var(--text-muted)">Consistency compounds. 3 hours a day, 300 days, changes everything.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 22 — RESOURCES
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s22" data-notes="'Every single resource on this slide is free — except one book that costs 500 rupees.' Go through the highlights: 'GitHub Student Pack is insane value — free Copilot, free domains, free cloud credits. If you haven't signed up, do it TODAY.' 'Microsoft Learn gives you certificates that look great on a resume.' 'CS50 from Harvard is the best intro CS course ever made — and it's free.' If you have a QR code to a resource page, show it now.">
+  <div class="bg-num">22</div>
+  <div class="slide-content">
+    <span class="overline reveal d1">All Free</span>
+    <h2 class="reveal d2">Your Toolkit</h2>
+    <div class="resource-grid">
+      <div class="resource reveal d3">
+        <div class="resource-name">LeetCode</div>
+        <div class="resource-desc">DSA practice &mdash; free tier is enough</div>
+        <span class="resource-tag">Free</span>
+      </div>
+      <div class="resource reveal d3">
+        <div class="resource-name">NeetCode</div>
+        <div class="resource-desc">Curated roadmap &amp; video solutions</div>
+        <span class="resource-tag">Free</span>
+      </div>
+      <div class="resource reveal d4">
+        <div class="resource-name">GitHub Student Pack</div>
+        <div class="resource-desc">Copilot, domains, cloud credits</div>
+        <span class="resource-tag">Free</span>
+      </div>
+      <div class="resource reveal d4">
+        <div class="resource-name">Microsoft Learn</div>
+        <div class="resource-desc">Azure, AI, Power Platform certs</div>
+        <span class="resource-tag">Free</span>
+      </div>
+      <div class="resource reveal d5">
+        <div class="resource-name">Azure for Students</div>
+        <div class="resource-desc">$100 cloud credits, no credit card</div>
+        <span class="resource-tag">Free $100</span>
+      </div>
+      <div class="resource reveal d5">
+        <div class="resource-name">CS50 (Harvard)</div>
+        <div class="resource-desc">Best intro CS course on the planet</div>
+        <span class="resource-tag">Free</span>
+      </div>
+      <div class="resource reveal d6">
+        <div class="resource-name">System Design Primer</div>
+        <div class="resource-desc">GitHub repo, comprehensive &amp; free</div>
+        <span class="resource-tag">Free</span>
+      </div>
+      <div class="resource reveal d6">
+        <div class="resource-name">Cracking the Coding Interview</div>
+        <div class="resource-desc">The classic interview prep book</div>
+        <span class="resource-tag">~&#8377;500</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 23 — CLOSING
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s23" data-notes="Read this quote SLOWLY. Make eye contact. This is the emotional peak. Pause after 'showed up every day and didn't stop.' Let it land. Then: 'I'm serious about that last line. Connect with me on LinkedIn. Email me. I'll review the first 10 resumes that land in my inbox this week. You now have one more alumni who wants to see you succeed.' Then open up for Q&A. Expect: CGPA questions, language choice, startup vs big tech, salary ranges. Be honest and warm.">
+  <div class="bg-num">&hearts;</div>
+  <div class="slide-content center">
+    <div class="accent-line reveal d1"></div>
+    <div class="closing-quote reveal d2">
+      When I was sitting where you are, I didn't have a roadmap. I didn't know anyone at Microsoft. I came from <strong>this campus</strong>, <strong>this hostel</strong>, probably the same mess food.<br><br>
+      The only difference between then and now is that <strong>I showed up every day and didn't stop.</strong><br><br>
+      You have everything you need &mdash; better tools, better resources, and now <strong>one more alumni to reach out to.</strong>
+    </div>
+    <div class="connect-row reveal d4">
+      <div class="connect-card">
+        <span>&#128101;</span>
+        <span>LinkedIn &mdash; Ankur Singh</span>
+      </div>
+      <div class="connect-card">
+        <span>&#9993;</span>
+        <span>ankusin@microsoft.com</span>
+      </div>
+    </div>
+    <p class="reveal d5" style="margin-top:2rem;color:var(--text-muted);font-size:1rem">Thank you, NIT Mizoram. Let's build the future together.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT ENGINE
+     ═══════════════════════════════════════════════ -->
+<script>
+(function(){
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  const progressFill = document.getElementById('progressFill');
+  const slideNum = document.getElementById('slideNum');
+  const keyHint = document.getElementById('keyHint');
+  const notesPanel = document.getElementById('notesPanel');
+  const notesText = document.getElementById('notesText');
+  let notesVisible = false;
+  let presenterWin = null;
+  const startTime = Date.now();
+
+  document.getElementById('slideTotal').textContent = String(total).padStart(2,'0');
+
+  // Orb color themes per slide
+  const themes = [
+    ['rgba(0,229,255,0.10)','rgba(255,184,0,0.06)','rgba(0,230,118,0.05)'],  // 1 title
+    ['rgba(255,184,0,0.12)','rgba(255,107,53,0.06)','rgba(0,229,255,0.04)'],  // 2 beginning
+    ['rgba(0,229,255,0.10)','rgba(255,107,53,0.06)','rgba(255,184,0,0.05)'],  // 3 college
+    ['rgba(0,229,255,0.08)','rgba(255,184,0,0.08)','rgba(0,230,118,0.06)'],  // 4 timeline
+    ['rgba(255,107,53,0.08)','rgba(0,229,255,0.06)','rgba(255,184,0,0.06)'],  // 5 curve
+    ['rgba(0,229,255,0.10)','rgba(255,184,0,0.08)','rgba(0,230,118,0.05)'],  // 6 pillars
+    ['rgba(0,229,255,0.08)','rgba(179,136,255,0.06)','rgba(255,184,0,0.05)'],// 7 interviews
+    ['rgba(0,229,255,0.10)','rgba(255,184,0,0.08)','rgba(0,230,118,0.06)'],  // 8 stats
+    ['rgba(179,136,255,0.08)','rgba(0,229,255,0.06)','rgba(255,64,129,0.05)'],// 9 roles
+    ['rgba(0,230,118,0.08)','rgba(0,229,255,0.06)','rgba(255,184,0,0.05)'],  // 10 culture
+    ['rgba(0,229,255,0.10)','rgba(255,184,0,0.08)','rgba(0,230,118,0.06)'],  // 11 realistic path
+    ['rgba(0,229,255,0.10)','rgba(179,136,255,0.08)','rgba(255,184,0,0.05)'],// 12 build signal
+    ['rgba(255,184,0,0.10)','rgba(0,229,255,0.08)','rgba(255,107,53,0.06)'],// 13 interview playbook
+    ['rgba(255,107,53,0.08)','rgba(255,184,0,0.06)','rgba(0,230,118,0.05)'],// 14 numbers game
+    ['rgba(255,64,129,0.08)','rgba(0,229,255,0.06)','rgba(255,184,0,0.05)'],// 15 myths busted
+    ['rgba(0,229,255,0.10)','rgba(255,184,0,0.10)','rgba(255,107,53,0.08)'],// 16 mindset
+    ['rgba(0,229,255,0.08)','rgba(179,136,255,0.06)','rgba(255,184,0,0.05)'],// 17 tech
+    ['rgba(0,229,255,0.12)','rgba(0,230,118,0.08)','rgba(255,184,0,0.06)'],  // 18 AI
+    ['rgba(0,229,255,0.08)','rgba(255,107,53,0.06)','rgba(255,184,0,0.05)'],  // 19 compare
+    ['rgba(0,229,255,0.08)','rgba(255,184,0,0.08)','rgba(255,107,53,0.06)'],  // 20 roadmap
+    ['rgba(0,229,255,0.10)','rgba(255,184,0,0.08)','rgba(0,230,118,0.06)'],  // 21 habit
+    ['rgba(0,230,118,0.08)','rgba(0,229,255,0.06)','rgba(255,184,0,0.05)'],  // 22 resources
+    ['rgba(0,229,255,0.12)','rgba(255,184,0,0.10)','rgba(0,230,118,0.08)'],  // 23 closing
+  ];
+
+  function updateOrbs(idx){
+    const t = themes[idx] || themes[0];
+    document.getElementById('orb1').style.background = t[0];
+    document.getElementById('orb2').style.background = t[1];
+    document.getElementById('orb3').style.background = t[2];
+  }
+
+  function goTo(idx){
+    if(idx < 0 || idx >= total || idx === current) return;
+    slides[current].classList.remove('active');
+    slides[idx].classList.add('active');
+    current = idx;
+    progressFill.style.width = ((current/(total-1))*100)+'%';
+    slideNum.textContent = String(current+1).padStart(2,'0');
+    updateOrbs(current);
+    if(current > 0) keyHint.style.opacity = '0';
+    else keyHint.style.opacity = '1';
+    // Trigger counters on stats slide (s8 = idx 7) and numbers game (s14 = idx 13)
+    if(current === 7) animateCounters('#s8 .counter');
+    if(current === 13) animateCounters('#s14 .counter2');
+    // Update notes
+    updateNotes();
+    // Sync presenter console
+    syncPresenter();
+  }
+
+  function updateNotes(){
+    const note = slides[current].dataset.notes || 'No notes for this slide.';
+    notesText.textContent = note;
+  }
+
+  function toggleNotes(){
+    notesVisible = !notesVisible;
+    notesPanel.classList.toggle('visible', notesVisible);
+  }
+
+  function formatTime(ms){
+    const s = Math.floor(ms/1000);
+    const m = Math.floor(s/60);
+    const h = Math.floor(m/60);
+    return `${String(h).padStart(2,'0')}:${String(m%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  }
+
+  function syncPresenter(){
+    if(!presenterWin || presenterWin.closed) return;
+    const note = slides[current].dataset.notes || 'No notes for this slide.';
+    const nextTitle = current < total-1
+      ? (slides[current+1].querySelector('h2,h1')?.textContent || 'End')
+      : '— End of Presentation —';
+    const elapsed = formatTime(Date.now() - startTime);
+    presenterWin.document.getElementById('pSlideNum').textContent = `Slide ${current+1} / ${total}`;
+    presenterWin.document.getElementById('pNotes').textContent = note;
+    presenterWin.document.getElementById('pNext').textContent = 'Next: ' + nextTitle;
+    presenterWin.document.getElementById('pTimer').textContent = elapsed;
+  }
+
+  function openPresenter(){
+    if(presenterWin && !presenterWin.closed){ presenterWin.focus(); syncPresenter(); return; }
+    presenterWin = window.open('','presenter','width=700,height=520');
+    const doc = presenterWin.document;
+    doc.write(`<!DOCTYPE html><html><head><title>Presenter Console</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box}
+      body{background:#0a0a14;color:#e8eaf0;font-family:'Outfit',sans-serif;padding:2rem;display:flex;flex-direction:column;height:100vh}
+      #pSlideNum{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#00e5ff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+      #pTimer{font-family:'JetBrains Mono',monospace;font-size:2.5rem;font-weight:700;color:#ffb800;margin-bottom:1.5rem;letter-spacing:0.02em}
+      .label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#475569;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem}
+      .label::before{content:'';width:6px;height:6px;border-radius:50%;background:#00e5ff}
+      #pNotes{font-size:1.15rem;color:#94a3b8;line-height:1.7;font-weight:300;flex:1;overflow-y:auto;margin-bottom:1.5rem;padding-right:1rem}
+      .next-label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#475569;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.3rem}
+      #pNext{font-size:1rem;color:#ffb800;font-weight:500}
+      .hint{margin-top:1rem;font-size:0.75rem;color:#334155;font-family:'JetBrains Mono',monospace}
+    </style></head><body>
+    <div id="pSlideNum">Slide 1 / ${total}</div>
+    <div id="pTimer">00:00:00</div>
+    <div class="label">Speaker Notes</div>
+    <div id="pNotes">Loading...</div>
+    <div class="next-label">UP NEXT</div>
+    <div id="pNext">...</div>
+    <div class="hint">Control slides from the main window</div>
+    </body></html>`);
+    doc.close();
+    syncPresenter();
+    // Update timer every second
+    setInterval(() => {
+      if(presenterWin && !presenterWin.closed){
+        const elapsed = formatTime(Date.now() - startTime);
+        presenterWin.document.getElementById('pTimer').textContent = elapsed;
+      }
+    }, 1000);
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){
+      e.preventDefault(); goTo(current+1);
+    } else if(e.key === 'ArrowLeft' || e.key === 'PageUp'){
+      e.preventDefault(); goTo(current-1);
+    } else if(e.key === 'Home'){
+      e.preventDefault(); goTo(0);
+    } else if(e.key === 'End'){
+      e.preventDefault(); goTo(total-1);
+    } else if(e.key === 'n' || e.key === 'N'){
+      toggleNotes();
+    } else if(e.key === 'p' || e.key === 'P'){
+      openPresenter();
+    }
+  });
+
+  // Click navigation (left/right halves)
+  document.addEventListener('click', e => {
+    if(e.target.closest('.connect-card, .card, .resource, .tech-card, .role')) return;
+    const x = e.clientX / window.innerWidth;
+    if(x > 0.65) goTo(current+1);
+    else if(x < 0.35) goTo(current-1);
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 60){
+      if(diff > 0) goTo(current+1);
+      else goTo(current-1);
+    }
+  });
+
+  // Counter animation
+  function animateCounters(selector){
+    document.querySelectorAll(selector).forEach(el => {
+      if(el.dataset.done) return;
+      el.dataset.done = '1';
+      const target = parseInt(el.dataset.target);
+      const duration = 1800;
+      const start = performance.now();
+      function tick(now){
+        const elapsed = now - start;
+        const progress = Math.min(elapsed/duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(target * eased).toLocaleString();
+        if(progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // Init
+  updateOrbs(0);
+  updateNotes();
+})();
+</script>
+</body>
+</html>
