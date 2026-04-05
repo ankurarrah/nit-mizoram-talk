@@ -569,6 +569,87 @@ p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
 }
 
 /* ═══════════════════════════════════════════
+   QUIZ
+   ═══════════════════════════════════════════ */
+.quiz-question{
+  font-family:var(--font-d);font-size:1.6rem;font-weight:700;
+  line-height:1.3;margin-bottom:2rem;color:var(--text);
+  text-align:center;
+}
+.quiz-question .q-num{
+  font-family:var(--font-m);font-size:0.75rem;color:var(--cyan);
+  text-transform:uppercase;letter-spacing:0.15em;
+  display:block;margin-bottom:0.6rem;
+}
+.quiz-options{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
+  max-width:800px;margin:0 auto;
+}
+.quiz-opt{
+  background:var(--bg-card);border:2px solid var(--border);
+  border-radius:14px;padding:1.3rem 1.5rem;
+  font-size:1.05rem;font-weight:400;color:var(--text-sec);
+  cursor:pointer;transition:all 0.35s ease;
+  display:flex;align-items:center;gap:1rem;
+  user-select:none;position:relative;overflow:hidden;
+}
+.quiz-opt:hover{
+  background:var(--bg-card-hover);
+  border-color:rgba(255,255,255,0.15);
+  transform:translateY(-2px);
+}
+.quiz-opt .opt-letter{
+  flex-shrink:0;width:36px;height:36px;border-radius:10px;
+  background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-weight:700;font-size:1rem;
+  color:var(--text-muted);transition:all 0.35s ease;
+}
+.quiz-opt.correct{
+  border-color:var(--green)!important;
+  background:rgba(0,230,118,0.08)!important;
+}
+.quiz-opt.correct .opt-letter{
+  background:var(--green);color:var(--bg);
+}
+.quiz-opt.wrong{
+  border-color:var(--rose)!important;
+  background:rgba(255,64,129,0.06)!important;
+  opacity:0.6;
+}
+.quiz-opt.wrong .opt-letter{
+  background:var(--rose);color:white;
+}
+.quiz-opt.disabled{pointer-events:none}
+.quiz-result{
+  text-align:center;margin-top:1.5rem;
+  font-size:1rem;color:var(--text-muted);
+  opacity:0;transition:opacity 0.5s ease;
+  min-height:1.5rem;
+}
+.quiz-result.show{opacity:1}
+.quiz-result .emoji{font-size:1.5rem;margin-right:0.3rem}
+
+.quiz-scoreboard{
+  display:flex;gap:2rem;justify-content:center;
+  margin-top:2rem;flex-wrap:wrap;
+}
+.quiz-score-item{
+  text-align:center;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:14px;padding:1.5rem 2.5rem;
+}
+.quiz-score-num{
+  font-family:var(--font-d);font-size:3.5rem;font-weight:800;
+  line-height:1;margin-bottom:0.3rem;
+}
+.quiz-score-label{
+  font-family:var(--font-m);font-size:0.7rem;
+  text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════ */
 @media(max-width:1400px){
@@ -1436,9 +1517,145 @@ p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SLIDE 23 — CLOSING
+     SLIDE 23 — QUIZ INTRO
      ═══════════════════════════════════════════════ -->
-<section class="slide" id="s23" data-notes="Read this quote SLOWLY. Make eye contact. This is the emotional peak. Pause after 'showed up every day and didn't stop.' Let it land. Then: 'I'm serious about that last line. Connect with me on LinkedIn. Email me. I'll review the first 10 resumes that land in my inbox this week. You now have one more alumni who wants to see you succeed.' Then open up for Q&A. Expect: CGPA questions, language choice, startup vs big tech, salary ranges. Be honest and warm.">
+<section class="slide" id="s23" data-notes="Energy boost! 'Before we wrap up, let's see how well you were listening. Quick quiz — 5 questions. Shout out your answers!' Make it fun and competitive. If audience is large, ask them to raise hands for A/B/C/D. Click the correct answer to reveal it. Keep energy high and playful. Don't make anyone feel bad for wrong answers.">
+  <div class="bg-num">?</div>
+  <div class="slide-content center">
+    <span class="overline reveal d1">Let's Have Fun</span>
+    <h1 class="title-large reveal d2"><span class="gradient-text">Quiz</span> Time</h1>
+    <p class="reveal d3" style="font-size:1.3rem;margin-top:0.5rem">5 questions. Let's see who was paying attention.</p>
+    <div class="stats-row reveal d4" style="margin-top:3rem">
+      <div class="stat">
+        <div class="stat-number" style="font-size:3rem;color:var(--cyan)">5</div>
+        <div class="stat-label">Questions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="font-size:3rem;color:var(--gold)">4</div>
+        <div class="stat-label">Options Each</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" style="font-size:3rem;color:var(--green)">&#8734;</div>
+        <div class="stat-label">Fun</div>
+      </div>
+    </div>
+    <p class="reveal d5" style="margin-top:2rem;font-family:var(--font-m);font-size:0.85rem;color:var(--text-muted)">Shout your answer &mdash; then I'll click to reveal!</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 24 — QUIZ Q1-Q2
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s24" data-notes="Q1: Answer is C — 45 min x 240 days. This was from the Mindset slide. If students get it, great — it shows they internalized the math. Q2: Answer is B — Growth mindset. This is core to Microsoft's culture. Satya Nadella made it central when he became CEO. If students say 'technical skills' — say 'those matter too, but culture is what Microsoft explicitly tests for.'">
+  <div class="bg-num">Q</div>
+  <div class="slide-content">
+    <div class="split" style="gap:2.5rem">
+      <div>
+        <div class="quiz-question reveal d1">
+          <span class="q-num">Question 1 of 5</span>
+          In the "consistency" example, how many hours of learning does 45 min/day for 240 days add up to?
+        </div>
+        <div class="quiz-options reveal d2" data-quiz="q1" data-answer="2">
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> 90 hours</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> 120 hours</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> 180 hours</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> 240 hours</div>
+        </div>
+        <div class="quiz-result" id="q1-result"></div>
+      </div>
+      <div>
+        <div class="quiz-question reveal d3">
+          <span class="q-num">Question 2 of 5</span>
+          What is the #1 cultural value Microsoft looks for in interviews?
+        </div>
+        <div class="quiz-options reveal d4" data-quiz="q2" data-answer="1">
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Technical excellence</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Growth mindset</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> Competitive coding rating</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> Years of experience</div>
+        </div>
+        <div class="quiz-result" id="q2-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 25 — QUIZ Q3-Q4
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s25" data-notes="Q3: Answer is D — System design. AI can write code and explain algorithms, but designing a distributed system requires understanding trade-offs, constraints, and human judgment. Q4: Answer is C — the GitHub Student Developer Pack. This is worth hundreds of dollars and includes Copilot, cloud credits, domains, and more. If students haven't signed up yet, tell them to do it TODAY.">
+  <div class="bg-num">Q</div>
+  <div class="slide-content">
+    <div class="split" style="gap:2.5rem">
+      <div>
+        <div class="quiz-question reveal d1">
+          <span class="q-num">Question 3 of 5</span>
+          Which of these can AI NOT replace for a software engineer?
+        </div>
+        <div class="quiz-options reveal d2" data-quiz="q3" data-answer="3">
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Writing boilerplate code</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Explaining algorithms</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> Debugging syntax errors</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> System design thinking</div>
+        </div>
+        <div class="quiz-result" id="q3-result"></div>
+      </div>
+      <div>
+        <div class="quiz-question reveal d3">
+          <span class="q-num">Question 4 of 5</span>
+          Which free program gives students GitHub Copilot, cloud credits, and domain names?
+        </div>
+        <div class="quiz-options reveal d4" data-quiz="q4" data-answer="2">
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Microsoft Imagine</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Azure for Students</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> GitHub Student Developer Pack</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> Google Summer of Code</div>
+        </div>
+        <div class="quiz-result" id="q4-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 26 — QUIZ Q5 + SCOREBOARD
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s26" data-notes="Q5: Answer is B — 1 hour DSA, 1 hour building, 1 conversation. This was the 1-1-1 habit slide. After revealing the answer, look at the scoreboard. 'Who got all 5? Stand up! You win a resume review from me.' Make it celebratory. Even 3/5 is great — 'You were clearly paying attention.' Use this energy to transition into the closing.">
+  <div class="bg-num">Q</div>
+  <div class="slide-content center">
+    <div class="quiz-question reveal d1" style="max-width:700px">
+      <span class="q-num">Question 5 of 5</span>
+      What is the "1-1-1 Daily Habit" from this talk?
+    </div>
+    <div class="quiz-options reveal d2" data-quiz="q5" data-answer="1" style="max-width:700px">
+      <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> 1 project, 1 language, 1 framework</div>
+      <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> 1 hr DSA, 1 hr building, 1 conversation</div>
+      <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> 1 LeetCode, 1 commit, 1 blog post</div>
+      <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> 1 interview, 1 application, 1 connection</div>
+    </div>
+    <div class="quiz-result" id="q5-result"></div>
+
+    <div class="quiz-scoreboard reveal d3">
+      <div class="quiz-score-item">
+        <div class="quiz-score-num" style="color:var(--green)" id="quizCorrect">0</div>
+        <div class="quiz-score-label">Correct</div>
+      </div>
+      <div class="quiz-score-item">
+        <div class="quiz-score-num" style="color:var(--text-muted)" id="quizTotal">0</div>
+        <div class="quiz-score-label">Attempted</div>
+      </div>
+      <div class="quiz-score-item">
+        <div class="quiz-score-num gradient-text" id="quizPercent">-</div>
+        <div class="quiz-score-label">Score</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SLIDE 27 — CLOSING
+     ═══════════════════════════════════════════════ -->
+<section class="slide" id="s27" data-notes="Read this quote SLOWLY. Make eye contact. This is the emotional peak. Pause after 'showed up every day and didn't stop.' Let it land. Then: 'I'm serious about that last line. Connect with me on LinkedIn. Email me. I'll review the first 10 resumes that land in my inbox this week. You now have one more alumni who wants to see you succeed.' Then open up for Q&A. Expect: CGPA questions, language choice, startup vs big tech, salary ranges. Be honest and warm.">
   <div class="bg-num">&hearts;</div>
   <div class="slide-content center">
     <div class="accent-line reveal d1"></div>
@@ -1504,7 +1721,11 @@ p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
     ['rgba(0,229,255,0.08)','rgba(255,184,0,0.08)','rgba(255,107,53,0.06)'],  // 20 roadmap
     ['rgba(0,229,255,0.10)','rgba(255,184,0,0.08)','rgba(0,230,118,0.06)'],  // 21 habit
     ['rgba(0,230,118,0.08)','rgba(0,229,255,0.06)','rgba(255,184,0,0.05)'],  // 22 resources
-    ['rgba(0,229,255,0.12)','rgba(255,184,0,0.10)','rgba(0,230,118,0.08)'],  // 23 closing
+    ['rgba(179,136,255,0.12)','rgba(0,229,255,0.08)','rgba(255,184,0,0.06)'],// 23 quiz intro
+    ['rgba(0,229,255,0.10)','rgba(255,184,0,0.08)','rgba(0,230,118,0.06)'],// 24 quiz q1-q2
+    ['rgba(255,184,0,0.10)','rgba(0,229,255,0.08)','rgba(179,136,255,0.06)'],// 25 quiz q3-q4
+    ['rgba(0,230,118,0.10)','rgba(255,184,0,0.08)','rgba(0,229,255,0.06)'],// 26 quiz q5+score
+    ['rgba(0,229,255,0.12)','rgba(255,184,0,0.10)','rgba(0,230,118,0.08)'],  // 27 closing
   ];
 
   function updateOrbs(idx){
@@ -1654,6 +1875,61 @@ p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
       requestAnimationFrame(tick);
     });
   }
+
+  // ═══ QUIZ LOGIC ═══
+  let quizScore = { correct: 0, total: 0 };
+  const resultMessages = {
+    correct: ['Correct!', 'Nailed it!', 'Exactly right!', 'You were listening!', 'Perfect!'],
+    wrong: ['Not quite!', 'Close, but no!', 'Good guess!', 'Almost!', 'Nice try!']
+  };
+
+  document.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+      const group = this.closest('.quiz-options');
+      if (group.dataset.answered) return;
+      group.dataset.answered = '1';
+
+      const correctIdx = parseInt(group.dataset.answer);
+      const clickedIdx = parseInt(this.dataset.idx);
+      const quizId = group.dataset.quiz;
+      const resultEl = document.getElementById(quizId + '-result');
+      const isCorrect = clickedIdx === correctIdx;
+
+      // Mark all options as disabled
+      group.querySelectorAll('.quiz-opt').forEach(o => o.classList.add('disabled'));
+
+      // Highlight correct answer
+      group.querySelector(`[data-idx="${correctIdx}"]`).classList.add('correct');
+
+      // If wrong, also highlight the wrong pick
+      if (!isCorrect) {
+        this.classList.add('wrong');
+      }
+
+      // Update score
+      quizScore.total++;
+      if (isCorrect) quizScore.correct++;
+
+      // Show result message
+      const msgs = isCorrect ? resultMessages.correct : resultMessages.wrong;
+      const msg = msgs[Math.floor(Math.random() * msgs.length)];
+      const emoji = isCorrect ? '<span class="emoji">&#10004;</span>' : '<span class="emoji">&#10060;</span>';
+      const correctText = isCorrect ? '' : ' The answer is <strong style="color:var(--green)">' +
+        group.querySelector(`[data-idx="${correctIdx}"]`).textContent.trim().substring(1).trim() + '</strong>';
+      resultEl.innerHTML = emoji + ' ' + msg + correctText;
+      resultEl.classList.add('show');
+
+      // Update scoreboard
+      const correctEl = document.getElementById('quizCorrect');
+      const totalEl = document.getElementById('quizTotal');
+      const pctEl = document.getElementById('quizPercent');
+      if (correctEl) correctEl.textContent = quizScore.correct;
+      if (totalEl) totalEl.textContent = quizScore.total;
+      if (pctEl && quizScore.total > 0) {
+        pctEl.textContent = Math.round((quizScore.correct / quizScore.total) * 100) + '%';
+      }
+    });
+  });
 
   // Init
   updateOrbs(0);
