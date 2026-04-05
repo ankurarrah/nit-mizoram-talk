@@ -1544,35 +1544,35 @@ p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SLIDE 24 — QUIZ Q1-Q2
+     SLIDE 24 — QUIZ Q1-Q2 (Algorithms + Data Structures)
      ═══════════════════════════════════════════════ -->
-<section class="slide" id="s24" data-notes="Q1: Answer is C — 45 min x 240 days. This was from the Mindset slide. If students get it, great — it shows they internalized the math. Q2: Answer is B — Growth mindset. This is core to Microsoft's culture. Satya Nadella made it central when he became CEO. If students say 'technical skills' — say 'those matter too, but culture is what Microsoft explicitly tests for.'">
+<section class="slide" id="s24" data-notes="Q1 (Binary Search): Answer is B — O(log n). Ask students to reason: 'Every step cuts the array in half. If array has 1 billion elements, how many steps? ~30. That's the power of log n.' If someone says O(n) — 'That's linear search, not binary.' If O(1) — 'That's hash table, different structure.' Q2 (Stack): Answer is C — Stack (LIFO). 'Think about it: the last page you visited is the first one you go back to. That's LIFO. Undo in your editor? Also a stack. Function call stack in recursion? Stack. This data structure is everywhere.' Ask: 'Where else do you see stacks in real life?'">
   <div class="bg-num">Q</div>
   <div class="slide-content">
     <div class="split" style="gap:2.5rem">
       <div>
         <div class="quiz-question reveal d1">
-          <span class="q-num">Question 1 of 5</span>
-          In the "consistency" example, how many hours of learning does 45 min/day for 240 days add up to?
+          <span class="q-num">Question 1 &mdash; Algorithms</span>
+          What is the time complexity of Binary Search on a sorted array of n elements?
         </div>
-        <div class="quiz-options reveal d2" data-quiz="q1" data-answer="2">
-          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> 90 hours</div>
-          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> 120 hours</div>
-          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> 180 hours</div>
-          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> 240 hours</div>
+        <div class="quiz-options reveal d2" data-quiz="q1" data-answer="1">
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> O(n)</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> O(log n)</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> O(n log n)</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> O(1)</div>
         </div>
         <div class="quiz-result" id="q1-result"></div>
       </div>
       <div>
         <div class="quiz-question reveal d3">
-          <span class="q-num">Question 2 of 5</span>
-          What is the #1 cultural value Microsoft looks for in interviews?
+          <span class="q-num">Question 2 &mdash; Data Structures</span>
+          Which data structure is used to implement the <strong style="color:var(--cyan)">Back button</strong> in a web browser?
         </div>
-        <div class="quiz-options reveal d4" data-quiz="q2" data-answer="1">
-          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Technical excellence</div>
-          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Growth mindset</div>
-          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> Competitive coding rating</div>
-          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> Years of experience</div>
+        <div class="quiz-options reveal d4" data-quiz="q2" data-answer="2">
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Queue</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Linked List</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> Stack</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> Binary Tree</div>
         </div>
         <div class="quiz-result" id="q2-result"></div>
       </div>
@@ -1581,35 +1581,35 @@ p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SLIDE 25 — QUIZ Q3-Q4
+     SLIDE 25 — QUIZ Q3-Q4 (Networking + OS)
      ═══════════════════════════════════════════════ -->
-<section class="slide" id="s25" data-notes="Q3: Answer is D — System design. AI can write code and explain algorithms, but designing a distributed system requires understanding trade-offs, constraints, and human judgment. Q4: Answer is C — the GitHub Student Developer Pack. This is worth hundreds of dollars and includes Copilot, cloud credits, domains, and more. If students haven't signed up yet, tell them to do it TODAY.">
+<section class="slide" id="s25" data-notes="Q3 (DNS): Answer is B — Domain name to IP address. 'When you type google.com, your laptop doesn't know where that is. DNS is like the phonebook of the internet — it translates google.com to 142.250.190.14. Without DNS, you'd have to memorize IP addresses.' Fun fact: 'DNS resolution typically goes through 4 servers — recursive resolver, root, TLD, and authoritative. This is a common interview question!' Q4 (Zombie Process): Answer is C — Zombie. 'A zombie process has finished executing but its parent hasn't read its exit status yet. It's dead but still has a row in the process table — like a ghost in the system. An orphan is different — that's when the parent dies first and init adopts the child.' This trips up even experienced engineers.">
   <div class="bg-num">Q</div>
   <div class="slide-content">
     <div class="split" style="gap:2.5rem">
       <div>
         <div class="quiz-question reveal d1">
-          <span class="q-num">Question 3 of 5</span>
-          Which of these can AI NOT replace for a software engineer?
+          <span class="q-num">Question 3 &mdash; Networking</span>
+          When you type <span style="color:var(--cyan);font-family:var(--font-m)">google.com</span> in your browser, which system translates it to an IP address?
         </div>
-        <div class="quiz-options reveal d2" data-quiz="q3" data-answer="3">
-          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Writing boilerplate code</div>
-          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Explaining algorithms</div>
-          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> Debugging syntax errors</div>
-          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> System design thinking</div>
+        <div class="quiz-options reveal d2" data-quiz="q3" data-answer="1">
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> HTTP</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> DNS</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> TCP/IP</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> SSL/TLS</div>
         </div>
         <div class="quiz-result" id="q3-result"></div>
       </div>
       <div>
         <div class="quiz-question reveal d3">
-          <span class="q-num">Question 4 of 5</span>
-          Which free program gives students GitHub Copilot, cloud credits, and domain names?
+          <span class="q-num">Question 4 &mdash; Operating Systems</span>
+          A process that has <strong style="color:var(--orange)">finished execution</strong> but still has an entry in the process table is called a:
         </div>
         <div class="quiz-options reveal d4" data-quiz="q4" data-answer="2">
-          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Microsoft Imagine</div>
-          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Azure for Students</div>
-          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> GitHub Student Developer Pack</div>
-          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> Google Summer of Code</div>
+          <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> Orphan Process</div>
+          <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> Daemon Process</div>
+          <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> Zombie Process</div>
+          <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> Sleeping Process</div>
         </div>
         <div class="quiz-result" id="q4-result"></div>
       </div>
@@ -1618,24 +1618,30 @@ p{color:var(--text-sec);font-size:1.15rem;max-width:680px;font-weight:300}
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SLIDE 26 — QUIZ Q5 + SCOREBOARD
+     SLIDE 26 — QUIZ Q5 + SCOREBOARD (Programming)
      ═══════════════════════════════════════════════ -->
-<section class="slide" id="s26" data-notes="Q5: Answer is B — 1 hour DSA, 1 hour building, 1 conversation. This was the 1-1-1 habit slide. After revealing the answer, look at the scoreboard. 'Who got all 5? Stand up! You win a resume review from me.' Make it celebratory. Even 3/5 is great — 'You were clearly paying attention.' Use this energy to transition into the closing.">
+<section class="slide" id="s26" data-notes="Q5 (Reference vs Copy): Answer is B — 4. This is a classic Python trap. y = x does NOT copy the list — it creates another reference to the SAME list. So y.append(4) modifies the original list too. Both x and y point to [1,2,3,4]. 'This is one of the most common bugs in Python and JavaScript. Understanding references vs copies is fundamental.' After all answers: check scoreboard. 'Who got all 5? Stand up! You clearly have strong fundamentals.' Even 3/5: 'These are actual interview-level questions. You're on the right track.' Use this energy to transition into the closing.">
   <div class="bg-num">Q</div>
   <div class="slide-content center">
-    <div class="quiz-question reveal d1" style="max-width:700px">
-      <span class="q-num">Question 5 of 5</span>
-      What is the "1-1-1 Daily Habit" from this talk?
+    <div class="quiz-question reveal d1" style="max-width:750px">
+      <span class="q-num">Question 5 &mdash; Programming</span>
+      What will this Python code print?
     </div>
-    <div class="quiz-options reveal d2" data-quiz="q5" data-answer="1" style="max-width:700px">
-      <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> 1 project, 1 language, 1 framework</div>
-      <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> 1 hr DSA, 1 hr building, 1 conversation</div>
-      <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> 1 LeetCode, 1 commit, 1 blog post</div>
-      <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> 1 interview, 1 application, 1 connection</div>
+    <div class="reveal d2" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:1.5rem 2rem;max-width:420px;margin:0 auto 1.5rem;text-align:left">
+      <pre style="font-family:var(--font-m);font-size:1.05rem;color:var(--text);line-height:1.6;margin:0"><span style="color:var(--cyan)">x</span> = [1, 2, 3]
+<span style="color:var(--gold)">y</span> = <span style="color:var(--cyan)">x</span>
+<span style="color:var(--gold)">y</span>.append(4)
+print(len(<span style="color:var(--cyan)">x</span>))</pre>
+    </div>
+    <div class="quiz-options reveal d3" data-quiz="q5" data-answer="1" style="max-width:700px">
+      <div class="quiz-opt" data-idx="0"><span class="opt-letter">A</span> 3</div>
+      <div class="quiz-opt" data-idx="1"><span class="opt-letter">B</span> 4</div>
+      <div class="quiz-opt" data-idx="2"><span class="opt-letter">C</span> Error</div>
+      <div class="quiz-opt" data-idx="3"><span class="opt-letter">D</span> None</div>
     </div>
     <div class="quiz-result" id="q5-result"></div>
 
-    <div class="quiz-scoreboard reveal d3">
+    <div class="quiz-scoreboard reveal d4">
       <div class="quiz-score-item">
         <div class="quiz-score-num" style="color:var(--green)" id="quizCorrect">0</div>
         <div class="quiz-score-label">Correct</div>
